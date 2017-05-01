@@ -26,7 +26,7 @@ namespace Proyecto2_compi
             nombre = n;
             tipo = t;
 
-            variables = null;
+            variables = new Variables();
             parametros = null;
 
             siguiente = null;
@@ -40,7 +40,7 @@ namespace Proyecto2_compi
             nombre = n;
             tipo = t;
 
-            variables = null;
+            variables = new Variables();
             parametros = null;
 
             siguiente = null;

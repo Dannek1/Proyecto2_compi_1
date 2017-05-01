@@ -800,6 +800,27 @@ namespace Proyecto2_compi
                         break;
                     }
 
+                case "Pintar":
+                    {
+                        Actuar(nodo.ChildNodes[0]);
+                        break;
+                    }
+
+                case "Punto":
+                    {
+                        int x;
+                        int y;
+                        string color;
+                        int diametro;
+
+                        x = Convert.ToInt32(Actuar(nodo.ChildNodes[1]));
+                        y = Convert.ToInt32(Actuar(nodo.ChildNodes[3]));
+                        color = Actuar(nodo.ChildNodes[5]);
+                        diametro = Convert.ToInt32(Actuar(nodo.ChildNodes[7]));
+
+                        break;
+                    }
+
 
 
             }
