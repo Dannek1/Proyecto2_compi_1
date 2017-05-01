@@ -384,13 +384,15 @@ namespace Proyecto2_compi
                                 clase_n.variables.Buscar(variable);
 
                                 valor= Actuar(nodo.ChildNodes[2]);
-                                
+
+                                clase_n.variables.aux.SetValor(valor);
 
                             }
                             else if(nuevo_f.variables.Buscar_existe(variable))
                             {
                                 nuevo_f.variables.Buscar(variable);
                                 valor = Actuar(nodo.ChildNodes[2]);
+                                nuevo_f.variables.aux.SetValor(valor);
                             }
                             else
                             {
