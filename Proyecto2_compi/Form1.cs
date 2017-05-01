@@ -843,6 +843,50 @@ namespace Proyecto2_compi
                         break;
                     }
 
+                case "Ovalo_R":
+                    {
+
+                        int x;
+                        int y;
+                        string colorb;
+                        string color;
+                        string tipoc;
+                        int ancho;
+                        int alto;
+                        char tipo;
+
+                        x = Convert.ToInt32(Actuar(nodo.ChildNodes[1]));
+                        y = Convert.ToInt32(Actuar(nodo.ChildNodes[3]));
+                        colorb = Actuar(nodo.ChildNodes[5]);
+                        color = colorb[1].ToString() + colorb[2] + colorb[3] + colorb[4] + colorb[5] + colorb[6] + colorb[7] + "";
+                        Color _color = System.Drawing.ColorTranslator.FromHtml(color);
+                        SolidBrush myBrush = new SolidBrush(_color);
+
+
+                        ancho = Convert.ToInt32(Actuar(nodo.ChildNodes[7]));
+                        alto = Convert.ToInt32(Actuar(nodo.ChildNodes[9]));
+
+                        tipoc = Actuar(nodo.ChildNodes[11]);
+                        tipo = tipoc[1];
+                        if (tipo == 'o')
+                        {
+                            dibujo.FillEllipse(myBrush, x, y, ancho, alto);
+                        }
+                        else if (tipo == 'r')
+                        {
+                            dibujo.FillRectangle(myBrush, new Rectangle(x, y, ancho, alto));
+
+                            
+                        }
+                        pictureBox1.Update();
+
+
+
+
+
+                        break;
+                    }
+
 
 
             }
