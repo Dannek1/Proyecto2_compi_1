@@ -22,13 +22,13 @@ namespace Proyecto2_compi
         Clases clases;
         Clase clase_n;
         Funcion nuevo_f;
-        
+
 
         public Form1()
         {
             InitializeComponent();
             clases = new Clases();
-            globales = false ;
+            globales = false;
         }
 
         public string esCadenaValida(string cadenaEntrada, Grammar gramatica)
@@ -42,14 +42,14 @@ namespace Proyecto2_compi
 
                 MessageBox.Show("Errores en la cadena de entrada");
 
-                
+
                 int elementos = arbol.ParserMessages.Count;
-               
+
                 for (int x = 0; x < elementos; x++)
                 {
 
-                    a+= "Error en " + arbol.ParserMessages[x].Location + ";" + arbol.ParserMessages[x].Message+"\n";
-                    
+                    a += "Error en " + arbol.ParserMessages[x].Location + ";" + arbol.ParserMessages[x].Message + "\n";
+
 
                 }
 
@@ -83,7 +83,7 @@ namespace Proyecto2_compi
             Form1 analizador = new Form1();
             Gramatica grammatica = new Gramatica();
             string respuesta = analizador.esCadenaValida(this.textBox1.Text, grammatica);
-            if (respuesta!="")
+            if (respuesta != "")
             {
                 MessageBox.Show("Arbol de Analisis Sintactico Constuido !!!");
 
@@ -92,7 +92,7 @@ namespace Proyecto2_compi
             }
             else
             {
-               
+
             }
         }
 
@@ -132,8 +132,8 @@ namespace Proyecto2_compi
             try
             {
                 Process.Start("C:\\Fuentes\\Graficar.bat");
-                
-               
+
+
 
 
 
@@ -147,7 +147,7 @@ namespace Proyecto2_compi
 
         string Actuar(ParseTreeNode nodo)
         {
-            //prueba
+
             string resultado = "";
 
             switch (nodo.Term.Name.ToString())
@@ -177,12 +177,12 @@ namespace Proyecto2_compi
                             {
                                 privacidad = true;
                             }
-                            else if(Actuar(nodo.ChildNodes[0]) == "privado")
+                            else if (Actuar(nodo.ChildNodes[0]) == "privado")
                             {
                                 privacidad = false;
 
                             }
-                            else if(nodo.ChildNodes[0].Token.Value.ToString()=="Conservar")
+                            else if (nodo.ChildNodes[0].Token.Value.ToString() == "Conservar")
                             {
 
                                 final = true;
@@ -190,9 +190,9 @@ namespace Proyecto2_compi
 
 
 
-                            nombre= nodo.ChildNodes[2].Token.Text;
+                            nombre = nodo.ChildNodes[2].Token.Text;
 
-                            clase_n = new Clase(nombre, privacidad,final);
+                            clase_n = new Clase(nombre, privacidad, final);
                         }
                         else if (nodo.ChildNodes.Count == 4)
                         {
@@ -221,11 +221,11 @@ namespace Proyecto2_compi
                                 nombre = nodo.ChildNodes[2].Token.Text;
 
                                 extension = Actuar(nodo.ChildNodes[3]);
-                               
-                                    clase_n = new Clase(nombre, privacidad, extension);
-                                
 
-                                
+                                clase_n = new Clase(nombre, privacidad, extension);
+
+
+
                             }
 
 
@@ -247,27 +247,27 @@ namespace Proyecto2_compi
                             nombre = nodo.ChildNodes[3].Token.Text;
 
                             extension = Actuar(nodo.ChildNodes[4]);
-                            clase_n = new Clase(nombre, privacidad, extension,final);
+                            clase_n = new Clase(nombre, privacidad, extension, final);
 
                         }
 
-                            clases.Insertar(clase_n);
+                        clases.Insertar(clase_n);
 
-                        
+
                         break;
                     }
 
                 case "Visibilidad":
                     {
-                        if(nodo.ChildNodes[0].Term.Name.ToString()== "publico")
+                        if (nodo.ChildNodes[0].Term.Name.ToString() == "publico")
                         {
                             resultado = "publico";
                         }
-                        else if(nodo.ChildNodes[0].Term.Name.ToString() == "privado")
+                        else if (nodo.ChildNodes[0].Term.Name.ToString() == "privado")
                         {
                             resultado = "privado";
                         }
-                    
+
 
                         break;
                     }
@@ -275,7 +275,7 @@ namespace Proyecto2_compi
                 case "Extensiones":
                     {
 
-                       resultado= Actuar(nodo.ChildNodes[1]);
+                        resultado = Actuar(nodo.ChildNodes[1]);
 
 
                         break;
@@ -314,10 +314,10 @@ namespace Proyecto2_compi
                         else
                         {
                             Actuar(nodo.ChildNodes[0]);
-                            
+
                         }
 
-                            break;
+                        break;
                     }
 
                 case "Componente":
@@ -329,19 +329,20 @@ namespace Proyecto2_compi
                             globales = true;
                             Actuar(nodo.ChildNodes[0]);
                             globales = false;
-                        }else if (nodo.ChildNodes.Count == 6)
+                        }
+                        else if (nodo.ChildNodes.Count == 6)
                         {
 
                             nombre = nodo.ChildNodes[0].Token.Text;
                             tipo = "void";
 
-                            nuevo_f = new Funcion(tipo,nombre);
+                            nuevo_f = new Funcion(tipo, nombre);
                             Actuar(nodo.ChildNodes[4]);
 
                             clase_n.funciones.Insertar(nuevo_f);
                         }
 
-                            break;
+                        break;
                     }
 
                 case "Sentencias":
@@ -376,30 +377,32 @@ namespace Proyecto2_compi
                     {
                         if (nodo.ChildNodes.Count == 4)
                         {
-                            string variable= nodo.ChildNodes[0].Token.Text;
+                            string variable = nodo.ChildNodes[0].Token.Text;
                             string valor;
 
                             if (clase_n.variables.Buscar_existe(variable))
                             {
                                 clase_n.variables.Buscar(variable);
 
-                                valor= Actuar(nodo.ChildNodes[2]);
-                                
+                                valor = Actuar(nodo.ChildNodes[2]);
+
+                                clase_n.variables.aux.SetValor(valor);
 
                             }
-                            else if(nuevo_f.variables.Buscar_existe(variable))
+                            else if (nuevo_f.variables.Buscar_existe(variable))
                             {
                                 nuevo_f.variables.Buscar(variable);
                                 valor = Actuar(nodo.ChildNodes[2]);
+                                nuevo_f.variables.aux.SetValor(valor);
                             }
                             else
                             {
-                                textBox2.Text += "No existe variable :\"" + variable+"\"";
+                                textBox2.Text += "No existe variable :\"" + variable + "\"";
                             }
                         }
 
 
-                            break;
+                        break;
                     }
 
                 case "Declaracion":
@@ -411,13 +414,13 @@ namespace Proyecto2_compi
 
                         if (nodo.ChildNodes.Count == 4)
                         {
-                                tipoV = Actuar(nodo.ChildNodes[1]);
-                                nombreV= Actuar(nodo.ChildNodes[2]);
-                                string[] nombres = nombreV.Split(',');
+                            tipoV = Actuar(nodo.ChildNodes[1]);
+                            nombreV = Actuar(nodo.ChildNodes[2]);
+                            string[] nombres = nombreV.Split(',');
 
                             if (nombres.Length > 1)
                             {
-                                for(int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
                                 {
                                     Variable nuevo = new Variable(tipoV, nombres[cuenta]);
 
@@ -445,11 +448,11 @@ namespace Proyecto2_compi
                                 }
                             }
 
-                            
+
 
 
                         }
-                            break;
+                        break;
                     }
 
                 case "Tipo":
@@ -463,12 +466,12 @@ namespace Proyecto2_compi
                     {
                         if (nodo.ChildNodes.Count == 3)
                         {
-                           resultado+= Actuar(nodo.ChildNodes[0])+",";
-                            resultado+= Actuar(nodo.ChildNodes[2]);
+                            resultado += Actuar(nodo.ChildNodes[0]) + ",";
+                            resultado += Actuar(nodo.ChildNodes[2]);
                         }
                         else
                         {
-                            resultado+= Actuar(nodo.ChildNodes[0]);
+                            resultado += Actuar(nodo.ChildNodes[0]);
 
                         }
 
@@ -485,13 +488,13 @@ namespace Proyecto2_compi
                     {
                         if (nodo.ChildNodes.Count == 3)
                         {
-                            resultado =Convert.ToString(Aritmeticas(nodo));
+                            resultado = Convert.ToString(Aritmeticas(nodo));
                         }
                         else
                         {
-                            if(nodo.ChildNodes[0].Term.Name.ToString() == "ID")
+                            if (nodo.ChildNodes[0].Term.Name.ToString() == "ID")
                             {
-                                
+
 
                                 if (clase_n.variables.Buscar_existe(nodo.ChildNodes[0].Token.Text))
                                 {
@@ -514,7 +517,7 @@ namespace Proyecto2_compi
                             {
                                 resultado = Actuar(nodo.ChildNodes[0]);
                             }
-                            
+
 
                         }
                         break;
@@ -523,11 +526,11 @@ namespace Proyecto2_compi
                 case "Valor":
 
                     {
-                        resultado= nodo.ChildNodes[0].Token.Text;
+                        resultado = nodo.ChildNodes[0].Token.Text;
                         break;
                     }
 
-                    
+
 
             }
 
@@ -584,12 +587,12 @@ namespace Proyecto2_compi
                                 double numero2 = Aritmeticas(nodo.ChildNodes[2]);
                                 Console.WriteLine(numero1 + "^" + numero2);
                                 resultado = Math.Pow(numero1, numero2);
-                                
+
 
 
                             }
 
-                            
+
                         }
                         else
                         {
@@ -599,10 +602,10 @@ namespace Proyecto2_compi
                         break;
                     }
 
-                    case "Valor":
+                case "Valor":
 
                     {
-                        resultado= Convert.ToDouble(nodo.ChildNodes[0].Token.Text);
+                        resultado = Convert.ToDouble(nodo.ChildNodes[0].Token.Text);
                         break;
                     }
             }
@@ -613,4 +616,3 @@ namespace Proyecto2_compi
 
     }
 }
-

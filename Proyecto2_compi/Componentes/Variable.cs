@@ -12,14 +12,14 @@ namespace Proyecto2_compi
         bool arreglo;
         private string nombre;
         private string valor;
-        private string tipo; 
+        private string tipo;
         int dimensiones;
         int dim_ocupadas;
 
         public Variable siguiente;
         public Variable anterior;
 
-        public Variable(string t,string n)
+        public Variable(string t, string n)
         {
             nombre = n;
             tipo = t;
@@ -32,7 +32,7 @@ namespace Proyecto2_compi
 
         }
 
-        public Variable(string t, string n,string v)
+        public Variable(string t, string n, string v)
         {
             nombre = n;
             tipo = t;
@@ -71,6 +71,11 @@ namespace Proyecto2_compi
         {
             return valor;
 
+        }
+
+        public void SetValor(string s)
+        {
+            valor = s;
         }
 
         public string GetNombre()
