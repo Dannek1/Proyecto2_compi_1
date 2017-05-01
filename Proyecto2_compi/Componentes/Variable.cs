@@ -73,11 +73,6 @@ namespace Proyecto2_compi
 
         }
 
-        public void SetValor(string s)
-        {
-            valor = s;
-        }
-
         public string GetNombre()
         {
             return nombre;
