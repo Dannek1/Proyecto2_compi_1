@@ -220,22 +220,22 @@ namespace Proyecto2_compi
 
 
             //24
-            Declaracion.Rule = Conservar +Rvar+ Tipo + Nombres + "=" + Operacion + finSentencia
-                            | Conservar +Rvar+ Tipo + Nombres + finSentencia
-                            |Rvar+ Tipo + Nombres + finSentencia
-                            |Rvar+ Tipo + Nombres + "=" + Operacion + finSentencia
-                            | Conservar +Rvar+ Tipo + Rarreglo + Nombres + Dimensiones + finSentencia
-                            |Rvar+ Tipo + Rarreglo + Nombres + Dimensiones + finSentencia
-                            |Rvar+ Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionesArreglo + "}" + finSentencia
-                            |Rvar+ Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionArreglo + "}" + finSentencia
-                            | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + finSentencia
-                            | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID +"("+ ")" + finSentencia
-                            | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + "(" + Parametros+ ")" + finSentencia
-                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionesArreglo + " }" + finSentencia
-                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionArreglo + "}" + finSentencia
-                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + finSentencia
-                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "("+ ")" + finSentencia
-                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "(" + Parametros+ ")" + finSentencia;
+            Declaracion.Rule = Conservar +Rvar+ Tipo + Nombres + "=" + Operacion + finSentencia//7
+                            | Conservar +Rvar+ Tipo + Nombres + finSentencia//5
+                            | Rvar+ Tipo + Nombres + finSentencia//4
+                            | Rvar+ Tipo + Nombres + "=" + Operacion + finSentencia//6
+                            | Conservar +Rvar+ Tipo + Rarreglo + Nombres + Dimensiones + finSentencia//7
+                            | Rvar+ Tipo + Rarreglo + Nombres + Dimensiones + finSentencia//6
+                            | Rvar+ Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionesArreglo + "}" + finSentencia//10
+                            | Rvar+ Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionArreglo + "}" + finSentencia//10
+                            | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + finSentencia//8
+                            | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID +"("+ ")" + finSentencia//10
+                            | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + "(" + Parametros+ ")" + finSentencia//11
+                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionesArreglo + " }" + finSentencia//11
+                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionArreglo + "}" + finSentencia//11
+                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + finSentencia//9
+                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "("+ ")" + finSentencia//10
+                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "(" + Parametros+ ")" + finSentencia;//11
 
             Declaracion.ErrorRule = SyntaxError + finSentencia;
             //31

@@ -597,7 +597,132 @@ namespace Proyecto2_compi
 
 
                         }
-                        break;
+                        else if (nodo.ChildNodes.Count == 5)
+                        {
+                            tipoV = Actuar(nodo.ChildNodes[2]);
+                            nombreV = Actuar(nodo.ChildNodes[3]);
+                            string[] nombres = nombreV.Split(',');
+
+                            if (nombres.Length > 1)
+                            {
+                                for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[cuenta],true);
+
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Variable nuevo = new Variable(tipoV, nombres[0],true);
+
+                                if (globales)
+                                {
+                                    clase_n.variables.Insertar(nuevo);
+                                }
+                                else
+                                {
+                                    nuevo_f.variables.Insertar(nuevo);
+                                }
+                            }
+
+                        }
+                        else if (nodo.ChildNodes.Count == 6)
+                        {
+
+                            if (nodo.ChildNodes[3].Token.Text.Equals("="))
+                            {
+
+                                tipoV = Actuar(nodo.ChildNodes[1]);
+                                nombreV = Actuar(nodo.ChildNodes[2]);
+                                string[] nombres = nombreV.Split(',');
+                                valorV = Actuar(nodo.ChildNodes[4]);
+
+                                if (nombres.Length > 1)
+                                {
+                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[cuenta]);
+                                        nuevo.SetValor(valorV);
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[0]);
+                                    nuevo.SetValor(valorV);
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
+                            }
+                            else //arreglo
+                            {
+
+                            }
+                           
+
+                        }
+                        else if (nodo.ChildNodes.Count == 7)
+                        {
+                            if (nodo.ChildNodes[4].Token.Text.Equals("="))
+                            {
+                                tipoV = Actuar(nodo.ChildNodes[2]);
+                                nombreV = Actuar(nodo.ChildNodes[3]);
+                                string[] nombres = nombreV.Split(',');
+                                valorV = Actuar(nodo.ChildNodes[5]);
+
+                                if (nombres.Length > 1)
+                                {
+                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[cuenta], true);
+                                        nuevo.SetValor(valorV);
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[0], true);
+                                    nuevo.SetValor(valorV);
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
+                            }
+                        }
+                            break;
                     }
 
                 case "Tipo":

@@ -13,6 +13,7 @@ namespace Proyecto2_compi
         private string nombre;
         private string valor;
         private string tipo;
+        private bool final;
         int dimensiones;
         int dim_ocupadas;
 
@@ -27,6 +28,23 @@ namespace Proyecto2_compi
             siguiente = null;
             anterior = null;
 
+            final = false;
+
+            valores = null;
+            arreglo = false;
+
+        }
+
+        public Variable(string t, string n,bool f)
+        {
+            nombre = n;
+            tipo = t;
+
+            siguiente = null;
+            anterior = null;
+
+            final = f;
+
             valores = null;
             arreglo = false;
 
@@ -40,6 +58,22 @@ namespace Proyecto2_compi
 
             siguiente = null;
             anterior = null;
+            final = false;
+
+            valores = null;
+            arreglo = false;
+
+        }
+
+        public Variable(string t, string n, string v,bool f)
+        {
+            nombre = n;
+            tipo = t;
+            valor = v;
+
+            siguiente = null;
+            anterior = null;
+            final = f;
 
             valores = null;
             arreglo = false;
@@ -58,6 +92,23 @@ namespace Proyecto2_compi
             valores = new Arreglo();
             arreglo = true;
             this.dimensiones = dimensiones;
+            final = false;
+
+        }
+
+        public Variable(string t, string n, string v, int dimensiones,bool f)
+        {
+            nombre = n;
+            tipo = t;
+            valor = v;
+
+            siguiente = null;
+            anterior = null;
+
+            valores = new Arreglo();
+            arreglo = true;
+            this.dimensiones = dimensiones;
+            final = f;
 
         }
 
@@ -88,5 +139,9 @@ namespace Proyecto2_compi
             return tipo;
         }
 
+        public bool IsFinal()
+        {
+            return final;
+        }
     }
 }

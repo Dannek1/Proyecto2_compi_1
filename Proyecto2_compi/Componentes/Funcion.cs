@@ -14,6 +14,8 @@ namespace Proyecto2_compi
         bool arreglo;
         public Variables variables;
 
+        private bool final;
+
         public Funcion siguiente;
         public Funcion anterior;
         public Parametros parametros;
@@ -29,6 +31,22 @@ namespace Proyecto2_compi
 
             siguiente = null;
             anterior = null;
+
+            final = false;
+        }
+
+        public Funcion(string t, string n, bool f)
+        {
+            nombre = n;
+            tipo = t;
+
+            variables = null;
+            parametros = null;
+
+            siguiente = null;
+            anterior = null;
+
+            final = f;
         }
     }
 }
