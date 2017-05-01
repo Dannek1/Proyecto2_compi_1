@@ -22,6 +22,7 @@ namespace Proyecto2_compi
         Clases clases;
         Clase clase_n;
         Funcion nuevo_f;
+        Graphics dibujo;
 
 
         public Form1()
@@ -29,6 +30,7 @@ namespace Proyecto2_compi
             InitializeComponent();
             clases = new Clases();
             globales = false;
+            dibujo = pictureBox1.CreateGraphics();
         }
 
         public string esCadenaValida(string cadenaEntrada, Grammar gramatica)
@@ -36,6 +38,7 @@ namespace Proyecto2_compi
             LanguageData lenguaje = new LanguageData(gramatica);
             Parser p = new Parser(lenguaje);
             ParseTree arbol = p.Parse(cadenaEntrada);
+            
             string a = "";
             if (arbol.HasErrors())
             {
@@ -71,7 +74,12 @@ namespace Proyecto2_compi
                     Genarbol(arbol.Root);
                     GenerateGraph("Entrada.txt", "C:/Fuentes/");
 
+                    
                     Actuar(arbol.Root);
+                    
+
+
+
                 }
             }
 
@@ -80,11 +88,14 @@ namespace Proyecto2_compi
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form1 analizador = new Form1();
+            
+            
             Gramatica grammatica = new Gramatica();
-            string respuesta = analizador.esCadenaValida(this.textBox1.Text, grammatica);
+            string respuesta = esCadenaValida(this.textBox1.Text, grammatica);
             if (respuesta != "")
             {
+                
+
                 MessageBox.Show("Arbol de Analisis Sintactico Constuido !!!");
 
                 textBox2.Text = respuesta;
@@ -810,14 +821,25 @@ namespace Proyecto2_compi
                     {
                         int x;
                         int y;
+                        string colorb;
                         string color;
                         int diametro;
 
                         x = Convert.ToInt32(Actuar(nodo.ChildNodes[1]));
                         y = Convert.ToInt32(Actuar(nodo.ChildNodes[3]));
-                        color = Actuar(nodo.ChildNodes[5]);
+                        colorb = Actuar(nodo.ChildNodes[5]);
+                        color = colorb[1].ToString()+ colorb[2] + colorb[3] + colorb[4] + colorb[5] + colorb[6] + colorb[7] + "";
                         diametro = Convert.ToInt32(Actuar(nodo.ChildNodes[7]));
+                        Color _color = System.Drawing.ColorTranslator.FromHtml(color);
+                        SolidBrush myBrush = new SolidBrush(_color);
 
+
+                        dibujo.FillEllipse(myBrush, x, y, diametro, diametro);
+
+
+                        pictureBox1.Update();
+                        
+                        
                         break;
                     }
 
@@ -905,5 +927,9 @@ namespace Proyecto2_compi
             return resultado;
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
