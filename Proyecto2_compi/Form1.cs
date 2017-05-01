@@ -147,7 +147,7 @@ namespace Proyecto2_compi
 
         string Actuar(ParseTreeNode nodo)
         {
-
+            //prueba
             string resultado = "";
 
             switch (nodo.Term.Name.ToString())
