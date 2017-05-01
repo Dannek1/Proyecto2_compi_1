@@ -259,8 +259,6 @@ namespace Proyecto2_compi
             Asignacion.Rule = ID + "=" + Operacion + finSentencia//4
                             | ID + aumentar + finSentencia//3
                             | ID + disminuir + finSentencia//3
-                             | ID + aumentar + finSentencia//3
-                            | ID + disminuir + finSentencia//3
                             | ID + Dimension+ "="+ Operacion + finSentencia;//5
 
             Asignacion.ErrorRule = SyntaxError + finSentencia;

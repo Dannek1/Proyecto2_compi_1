@@ -397,12 +397,157 @@ namespace Proyecto2_compi
                             }
                             else
                             {
-                                textBox2.Text += "No existe variable :\"" + variable + "\"";
+                                textBox2.Text += "(Error en "+nodo.Token.Location.Line+","+ nodo.Token.Location.Column + ") No existe variable :\"" + variable + "\"";
+                            }
+
+                        } else if (nodo.ChildNodes.Count == 3)
+                        {
+                            bool aumentar=false;
+                            bool disminuir = false;
+                            
+
+
+
+                            string variable = nodo.ChildNodes[0].Token.Text;
+
+                            if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "aumentar")
+                            {
+                                aumentar = true;
+                            }
+                            else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "disminuir")
+                            {
+                                disminuir = true;
+                            }
+
+
+                            if (clase_n.variables.Buscar_existe(variable))
+                            {
+                                clase_n.variables.Buscar(variable);
+
+                                if (aumentar)
+                                {
+                                    if (clase_n.variables.aux.GetTipo().Equals("entero"))
+                                    {
+                                        int valor = Convert.ToInt32(clase_n.variables.aux.GetValor());
+                                        valor++;
+                                        clase_n.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (clase_n.variables.aux.GetTipo().Equals("doble"))
+                                    {
+                                        double valor = Convert.ToDouble(clase_n.variables.aux.GetValor());
+                                        valor++;
+                                        clase_n.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (clase_n.variables.aux.GetTipo().Equals("caracter"))
+                                    {
+                                        char valor = Convert.ToChar(clase_n.variables.aux.GetValor());
+                                        valor++;
+                                        clase_n.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else
+                                    {
+                                        textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                    }
+
+                                }
+                                else if (disminuir)
+                                {
+                                    if (clase_n.variables.aux.GetTipo().Equals("entero"))
+                                    {
+                                        int valor = Convert.ToInt32(clase_n.variables.aux.GetValor());
+                                        valor--;
+                                        clase_n.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (clase_n.variables.aux.GetTipo().Equals("doble"))
+                                    {
+                                        double valor = Convert.ToDouble(clase_n.variables.aux.GetValor());
+                                        valor--;
+                                        clase_n.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (clase_n.variables.aux.GetTipo().Equals("caracter"))
+                                    {
+                                        char valor = Convert.ToChar(clase_n.variables.aux.GetValor());
+                                        valor--;
+                                        clase_n.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else
+                                    {
+                                        textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                    }
+                                }
+
+                               
+
+                                //clase_n.variables.aux.SetValor(valor);
+
+                            }
+                            else if (nuevo_f.variables.Buscar_existe(variable))
+                            {
+                                nuevo_f.variables.Buscar(variable);
+                                if (aumentar)
+                                {
+                                    if (nuevo_f.variables.aux.GetTipo().Equals("entero"))
+                                    {
+                                        int valor = Convert.ToInt32(nuevo_f.variables.aux.GetValor());
+                                        valor++;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (nuevo_f.variables.aux.GetTipo().Equals("doble"))
+                                    {
+                                        double valor = Convert.ToDouble(nuevo_f.variables.aux.GetValor());
+                                        valor++;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (nuevo_f.variables.aux.GetTipo().Equals("caracter"))
+                                    {
+                                        char valor = Convert.ToChar(nuevo_f.variables.aux.GetValor());
+                                        valor++;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else
+                                    {
+                                        textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                    }
+
+                                }
+                                else if (disminuir)
+                                {
+                                    if (nuevo_f.variables.aux.GetTipo().Equals("entero"))
+                                    {
+                                        int valor = Convert.ToInt32(nuevo_f.variables.aux.GetValor());
+                                        valor--;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (nuevo_f.variables.aux.GetTipo().Equals("doble"))
+                                    {
+                                        double valor = Convert.ToDouble(nuevo_f.variables.aux.GetValor());
+                                        valor--;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (nuevo_f.variables.aux.GetTipo().Equals("caracter"))
+                                    {
+                                        char valor = Convert.ToChar(nuevo_f.variables.aux.GetValor());
+                                        valor--;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else
+                                    {
+                                        textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                    }
+                                }
+
+
+
+                                // nuevo_f.variables.aux.SetValor(valor);
+                            }
+                            else
+                            {
+                                textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") No existe variable :\"" + variable + "\"";
                             }
                         }
 
 
-                        break;
+                            break;
                     }
 
                 case "Declaracion":

@@ -83,5 +83,10 @@ namespace Proyecto2_compi
             return nombre;
         }
 
+        public string GetTipo()
+        {
+            return tipo;
+        }
+
     }
 }
