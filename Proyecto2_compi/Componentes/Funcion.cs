@@ -15,10 +15,12 @@ namespace Proyecto2_compi
         public Variables variables;
 
         private bool final;
+        private bool publico;
 
         public Funcion siguiente;
         public Funcion anterior;
         public Parametros parametros;
+
         
 
         public Funcion(string t, string n)
@@ -26,6 +28,7 @@ namespace Proyecto2_compi
             nombre = n;
             tipo = t;
 
+            
             variables = new Variables();
             parametros = null;
 
@@ -33,7 +36,10 @@ namespace Proyecto2_compi
             anterior = null;
 
             final = false;
+            publico = false; ;
         }
+
+
 
         public Funcion(string t, string n, bool f)
         {
@@ -47,6 +53,32 @@ namespace Proyecto2_compi
             anterior = null;
 
             final = f;
+            publico = false;
+        }
+
+        public Funcion(string t, string n, bool f,bool p)
+        {
+            nombre = n;
+            tipo = t;
+
+            variables = new Variables();
+            parametros = null;
+
+            siguiente = null;
+            anterior = null;
+
+            final = f;
+            publico = p;
+        }
+
+        public bool IsFinal()
+        {
+            return final;
+        }
+
+        public bool IsPublico()
+        {
+            return publico;
         }
     }
 }

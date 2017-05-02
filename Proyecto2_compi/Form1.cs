@@ -18,10 +18,12 @@ namespace Proyecto2_compi
 
         String graph = "";
         bool globales;
+        bool parametro_funcion;
 
         Clases clases;
         Clase clase_n;
         Funcion nuevo_f;
+        Parametro nuevo_P;
         Graphics dibujo;
 
 
@@ -335,6 +337,10 @@ namespace Proyecto2_compi
                     {
                         string nombre;
                         string tipo;
+                        bool final;
+                        bool privacidad=false;
+
+
                         if (nodo.ChildNodes.Count == 1)
                         {
                             globales = true;
@@ -352,8 +358,64 @@ namespace Proyecto2_compi
 
                             clase_n.funciones.Insertar(nuevo_f);
                         }
+                        else if (nodo.ChildNodes.Count == 7)
+                        {
+                            if (nodo.ChildNodes[0].Token.Value.ToString() == "Conservar")
+                            {
+                                final = true;
+                                nombre = nodo.ChildNodes[1].Token.Text;
 
-                        break;
+                                tipo = "void";
+
+                                nuevo_f = new Funcion(tipo, nombre,final);
+                                Actuar(nodo.ChildNodes[5]);
+
+                                clase_n.funciones.Insertar(nuevo_f);
+                            }
+                            else if (nodo.ChildNodes[0].Token.Value.ToString() == "Visibilidad")
+                            {
+                                if (Actuar(nodo.ChildNodes[0]) == "publico")
+                                {
+                                    privacidad = true;
+                                }
+                                else if (Actuar(nodo.ChildNodes[0]) == "privado")
+                                {
+                                    privacidad = false;
+
+                                }
+
+                                nombre = nodo.ChildNodes[1].Token.Text;
+
+                                tipo = "void";
+
+                                nuevo_f = new Funcion(tipo, nombre,false,privacidad);
+                                Actuar(nodo.ChildNodes[5]);
+                                clase_n.funciones.Insertar(nuevo_f);
+
+                            }
+                            else
+                            {
+                                nombre = nodo.ChildNodes[0].Token.Text;
+
+                                tipo = "void";
+
+                                nuevo_f = new Funcion(tipo, nombre, false, privacidad);
+
+                                nuevo_f.parametros = new Parametros();
+
+                                parametro_funcion = true;
+                                Actuar(nodo.ChildNodes[2]);
+                                parametro_funcion = false;
+
+
+                                Actuar(nodo.ChildNodes[5]);
+                                clase_n.funciones.Insertar(nuevo_f);
+
+                            }
+
+                        }
+
+                            break;
                     }
 
                 case "Sentencias":
@@ -887,6 +949,41 @@ namespace Proyecto2_compi
                         break;
                     }
 
+                case "Parametros":
+                    {
+                        if (nodo.ChildNodes.Count == 3)
+                        {
+                            resultado = Actuar(nodo.ChildNodes[0]);
+                            resultado = Actuar(nodo.ChildNodes[2]);
+                        }
+                        else
+                        {
+                            resultado = Actuar(nodo.ChildNodes[0]);
+
+                        }
+
+                        break;
+                    }
+
+                case "Parametro":
+                    {
+                        string tipo;
+                        string nombre;
+
+                        tipo= Actuar(nodo.ChildNodes[0]);
+                        nombre = nodo.ChildNodes[1].Token.Value.ToString();
+
+
+                        nuevo_P = new Parametro(tipo, nombre);
+
+                        if (parametro_funcion)
+                        {
+                            nuevo_f.parametros.Insertar(nuevo_P);
+                        }
+
+                        break;
+                    }
+
 
 
             }
@@ -965,6 +1062,8 @@ namespace Proyecto2_compi
                         resultado = Convert.ToDouble(nodo.ChildNodes[0].Token.Text);
                         break;
                     }
+
+                
             }
 
 
