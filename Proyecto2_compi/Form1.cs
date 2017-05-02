@@ -360,7 +360,7 @@ namespace Proyecto2_compi
                         }
                         else if (nodo.ChildNodes.Count == 7)
                         {
-                            if (nodo.ChildNodes[0].Token.Value.ToString() == "Conservar")
+                            if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Conservar"))
                             {
                                 final = true;
                                 nombre = nodo.ChildNodes[1].Token.Text;
@@ -372,7 +372,7 @@ namespace Proyecto2_compi
 
                                 clase_n.funciones.Insertar(nuevo_f);
                             }
-                            else if (nodo.ChildNodes[0].Token.Value.ToString() == "Visibilidad")
+                            else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Visibilidad"))
                             {
                                 if (Actuar(nodo.ChildNodes[0]) == "publico")
                                 {
