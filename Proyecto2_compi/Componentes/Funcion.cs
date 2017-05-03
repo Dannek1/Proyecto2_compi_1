@@ -11,7 +11,7 @@ namespace Proyecto2_compi
     {
         string tipo;
         string nombre;
-        bool arreglo;
+        private bool arreglo;
         public Variables variables;
 
         private bool final;
@@ -79,6 +79,16 @@ namespace Proyecto2_compi
         public bool IsPublico()
         {
             return publico;
+        }
+
+        public void SetArreglor(bool a)
+        {
+            arreglo = a;
+        }
+
+        public bool IsArreglo()
+        {
+            return arreglo;
         }
     }
 }

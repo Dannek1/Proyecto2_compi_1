@@ -393,6 +393,17 @@ namespace Proyecto2_compi
                                 clase_n.funciones.Insertar(nuevo_f);
 
                             }
+                            else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Tipo"))
+                            {
+
+                                tipo = Actuar(nodo.ChildNodes[0]);
+                                nombre = nodo.ChildNodes[1].Token.Text;
+
+                                nuevo_f = new Funcion(tipo, nombre, false, privacidad);
+                                Actuar(nodo.ChildNodes[5]);
+                                clase_n.funciones.Insertar(nuevo_f);
+
+                            }
                             else
                             {
                                 nombre = nodo.ChildNodes[0].Token.Text;
@@ -413,6 +424,125 @@ namespace Proyecto2_compi
 
                             }
 
+                        }
+                        else if (nodo.ChildNodes.Count == 8)
+                        {
+                            if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Conservar"))
+                            {
+
+
+                                if (nodo.ChildNodes[1].Term.Name.ToString().Equals("Tipo"))
+                                {
+                                    final = true;
+                                    nombre = nodo.ChildNodes[2].Token.Text;
+
+                                    tipo = Actuar(nodo.ChildNodes[1]);
+
+                                    nuevo_f = new Funcion(tipo, nombre,final);
+
+                                  
+                                    Actuar(nodo.ChildNodes[6]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+                                }
+                                else
+                                {
+                                    final = true;
+                                    nombre = nodo.ChildNodes[1].Token.Text;
+
+                                    tipo = "void";
+
+                                    nuevo_f = new Funcion(tipo, nombre, final);
+
+                                    parametro_funcion = true;
+                                    Actuar(nodo.ChildNodes[3]);
+                                    parametro_funcion = false;
+
+
+
+                                    Actuar(nodo.ChildNodes[6]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+                                }
+                                
+                            }
+                            else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Tipo"))
+                            {
+
+                                if (nodo.ChildNodes[1].Token.Text.Equals("[]"))
+                                {
+                                    tipo = Actuar(nodo.ChildNodes[0]);
+                                    nombre = nodo.ChildNodes[2].Token.Text;
+
+                                    nuevo_f = new Funcion(tipo, nombre);
+
+                                    nuevo_f.SetArreglor(true);
+
+                                    Actuar(nodo.ChildNodes[6]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+
+
+                                }
+                                else
+                                {
+                                    tipo = Actuar(nodo.ChildNodes[0]);
+                                    nombre = nodo.ChildNodes[1].Token.Text;
+
+                                    nuevo_f = new Funcion(tipo, nombre);
+
+                                    parametro_funcion = true;
+                                    Actuar(nodo.ChildNodes[3]);
+                                    parametro_funcion = false;
+
+                                    Actuar(nodo.ChildNodes[6]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+                                }
+                                
+
+                            }
+                            else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Visibilidad"))
+                            {
+
+                                if (Actuar(nodo.ChildNodes[0]) == "publico")
+                                {
+                                    privacidad = true;
+                                }
+                                else if (Actuar(nodo.ChildNodes[0]) == "privado")
+                                {
+                                    privacidad = false;
+
+                                }
+
+                                if (nodo.ChildNodes[1].Term.Name.ToString().Equals("Tipo"))
+                                {
+                                    tipo = Actuar(nodo.ChildNodes[1]);
+
+                                    nombre = Actuar(nodo.ChildNodes[2]);
+
+                                    Actuar(nodo.ChildNodes[6]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+                                }
+                                else
+                                {
+
+                                    tipo = "void";
+                                    nombre = nodo.ChildNodes[1].Token.Text;
+
+                                    parametro_funcion = true;
+                                    Actuar(nodo.ChildNodes[3]);
+                                    parametro_funcion = false;
+
+                                    Actuar(nodo.ChildNodes[6]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+                                }
+
+                                
+
+                            }
                         }
 
                             break;
