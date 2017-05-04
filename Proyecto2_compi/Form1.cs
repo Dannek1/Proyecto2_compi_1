@@ -454,10 +454,11 @@ namespace Proyecto2_compi
 
                                     nuevo_f = new Funcion(tipo, nombre, final);
 
+                                    nuevo_f.parametros = new Parametros();
+
                                     parametro_funcion = true;
                                     Actuar(nodo.ChildNodes[3]);
                                     parametro_funcion = false;
-
 
 
                                     Actuar(nodo.ChildNodes[6]);
@@ -521,6 +522,8 @@ namespace Proyecto2_compi
 
                                     nombre = Actuar(nodo.ChildNodes[2]);
 
+                                    nuevo_f = new Funcion(tipo, nombre, false, privacidad);
+
                                     Actuar(nodo.ChildNodes[6]);
 
                                     clase_n.funciones.Insertar(nuevo_f);
@@ -531,6 +534,9 @@ namespace Proyecto2_compi
                                     tipo = "void";
                                     nombre = nodo.ChildNodes[1].Token.Text;
 
+                                    nuevo_f = new Funcion(tipo, nombre, false, privacidad);
+
+                                    nuevo_f.parametros = new Parametros();
                                     parametro_funcion = true;
                                     Actuar(nodo.ChildNodes[3]);
                                     parametro_funcion = false;
@@ -543,9 +549,117 @@ namespace Proyecto2_compi
                                 
 
                             }
+
+                        }
+                        else if (nodo.ChildNodes.Count == 9)
+                        {
+                            if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Conservar"))
+                            {
+                                final = true;
+                                tipo = Actuar(nodo.ChildNodes[1]);
+
+                                if (nodo.ChildNodes[2].Token.Text.Equals("[]"))
+                                {
+                                    nombre = Actuar(nodo.ChildNodes[3]);
+
+                                    nuevo_f = new Funcion(tipo, nombre, final);
+
+                                    nuevo_f.SetArreglor(true);
+
+                                    Actuar(nodo.ChildNodes[7]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+
+                                }
+                                else
+                                {
+                                    nombre = Actuar(nodo.ChildNodes[2]);
+
+                                    nuevo_f = new Funcion(tipo, nombre, final);
+
+                                    nuevo_f.parametros = new Parametros();
+
+                                    parametro_funcion = true;
+                                    Actuar(nodo.ChildNodes[4]);
+                                    parametro_funcion = false;
+
+                                    Actuar(nodo.ChildNodes[7]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+
+                                }
+                            }
+                            else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Visibilidad"))
+                            {
+                                if (Actuar(nodo.ChildNodes[0]) == "publico")
+                                {
+                                    privacidad = true;
+                                }
+                                else if (Actuar(nodo.ChildNodes[0]) == "privado")
+                                {
+                                    privacidad = false;
+
+                                }
+
+                                tipo = Actuar(nodo.ChildNodes[1]);
+
+                                if (nodo.ChildNodes[2].Token.Text.Equals("[]"))
+                                {
+                                    nombre = Actuar(nodo.ChildNodes[3]);
+
+                                    nuevo_f = new Funcion(tipo, nombre, false,privacidad);
+
+                                    nuevo_f.SetArreglor(true);
+
+                                    Actuar(nodo.ChildNodes[7]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+
+                                }
+                                else
+                                {
+                                    nombre = Actuar(nodo.ChildNodes[2]);
+
+                                    nuevo_f = new Funcion(tipo, nombre, false,privacidad);
+
+                                    nuevo_f.parametros = new Parametros();
+
+                                    parametro_funcion = true;
+                                    Actuar(nodo.ChildNodes[4]);
+                                    parametro_funcion = false;
+
+                                    Actuar(nodo.ChildNodes[7]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+
+                                }
+
+                            }
+                            else
+                            {
+                                tipo = Actuar(nodo.ChildNodes[0]);
+                                nombre = Actuar(nodo.ChildNodes[2]);
+
+                                nuevo_f = new Funcion(tipo, nombre);
+
+                                nuevo_f.SetArreglor(true);
+
+
+                                nuevo_f.parametros = new Parametros();
+
+                                parametro_funcion = true;
+                                Actuar(nodo.ChildNodes[4]);
+                                parametro_funcion = false;
+
+                                Actuar(nodo.ChildNodes[7]);
+
+                                clase_n.funciones.Insertar(nuevo_f);
+
+                            }
+
                         }
 
-                            break;
+                        break;
                     }
 
                 case "Sentencias":
