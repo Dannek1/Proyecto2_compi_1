@@ -735,7 +735,43 @@ namespace Proyecto2_compi
 
 
                             }
- 
+
+
+                        }
+                        else
+                        {
+                            if (Actuar(nodo.ChildNodes[0]) == "publico")
+                            {
+                                privacidad = true;
+                            }
+                            else if (Actuar(nodo.ChildNodes[0]) == "privado")
+                            {
+                                privacidad = false;
+
+                            }
+
+                            final = true;
+
+                            tipo = Actuar(nodo.ChildNodes[2]);
+                            nombre = nodo.ChildNodes[4].Token.Text;
+
+                            nuevo_f = new Funcion(tipo, nombre, final, privacidad);
+
+                            nuevo_f.SetArreglor(true);
+
+                            nuevo_f.parametros = new Parametros();
+
+
+                            parametro_funcion = true;
+                            Actuar(nodo.ChildNodes[6]);
+                            parametro_funcion = false;
+
+                            Actuar(nodo.ChildNodes[9]);
+
+                            clase_n.funciones.Insertar(nuevo_f);
+
+
+
 
                         }
 
