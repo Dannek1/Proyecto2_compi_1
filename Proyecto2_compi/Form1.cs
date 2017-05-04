@@ -367,7 +367,7 @@ namespace Proyecto2_compi
 
                                 tipo = "void";
 
-                                nuevo_f = new Funcion(tipo, nombre,final);
+                                nuevo_f = new Funcion(tipo, nombre, final);
                                 Actuar(nodo.ChildNodes[5]);
 
                                 clase_n.funciones.Insertar(nuevo_f);
@@ -388,7 +388,7 @@ namespace Proyecto2_compi
 
                                 tipo = "void";
 
-                                nuevo_f = new Funcion(tipo, nombre,false,privacidad);
+                                nuevo_f = new Funcion(tipo, nombre, false, privacidad);
                                 Actuar(nodo.ChildNodes[5]);
                                 clase_n.funciones.Insertar(nuevo_f);
 
@@ -438,9 +438,9 @@ namespace Proyecto2_compi
 
                                     tipo = Actuar(nodo.ChildNodes[1]);
 
-                                    nuevo_f = new Funcion(tipo, nombre,final);
+                                    nuevo_f = new Funcion(tipo, nombre, final);
 
-                                  
+
                                     Actuar(nodo.ChildNodes[6]);
 
                                     clase_n.funciones.Insertar(nuevo_f);
@@ -465,7 +465,7 @@ namespace Proyecto2_compi
 
                                     clase_n.funciones.Insertar(nuevo_f);
                                 }
-                                
+
                             }
                             else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Tipo"))
                             {
@@ -500,7 +500,7 @@ namespace Proyecto2_compi
 
                                     clase_n.funciones.Insertar(nuevo_f);
                                 }
-                                
+
 
                             }
                             else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Visibilidad"))
@@ -546,7 +546,7 @@ namespace Proyecto2_compi
                                     clase_n.funciones.Insertar(nuevo_f);
                                 }
 
-                                
+
 
                             }
 
@@ -607,7 +607,7 @@ namespace Proyecto2_compi
                                 {
                                     nombre = Actuar(nodo.ChildNodes[3]);
 
-                                    nuevo_f = new Funcion(tipo, nombre, false,privacidad);
+                                    nuevo_f = new Funcion(tipo, nombre, false, privacidad);
 
                                     nuevo_f.SetArreglor(true);
 
@@ -620,7 +620,7 @@ namespace Proyecto2_compi
                                 {
                                     nombre = Actuar(nodo.ChildNodes[2]);
 
-                                    nuevo_f = new Funcion(tipo, nombre, false,privacidad);
+                                    nuevo_f = new Funcion(tipo, nombre, false, privacidad);
 
                                     nuevo_f.parametros = new Parametros();
 
@@ -656,6 +656,86 @@ namespace Proyecto2_compi
                                 clase_n.funciones.Insertar(nuevo_f);
 
                             }
+
+                        }
+                        else if (nodo.ChildNodes.Count == 10)
+                        {
+                            if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Conservar"))
+                            {
+                                final = true;
+                                tipo = Actuar(nodo.ChildNodes[1]);
+                                nombre = Actuar(nodo.ChildNodes[3]);
+
+                                nuevo_f = new Funcion(tipo, nombre, final);
+
+                                nuevo_f.SetArreglor(true);
+
+                                nuevo_f.parametros = new Parametros();
+
+                                parametro_funcion = true;
+                                Actuar(nodo.ChildNodes[5]);
+                                parametro_funcion = false;
+
+                                Actuar(nodo.ChildNodes[8]);
+
+                                clase_n.funciones.Insertar(nuevo_f);
+
+
+
+
+                            }
+                            else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Visibilidad"))
+                            {
+                                if (Actuar(nodo.ChildNodes[0]) == "publico")
+                                {
+                                    privacidad = true;
+                                }
+                                else if (Actuar(nodo.ChildNodes[0]) == "privado")
+                                {
+                                    privacidad = false;
+
+                                }
+
+                                if (nodo.ChildNodes[1].Term.Name.ToString().Equals("Tipo"))
+                                {
+                                    tipo = Actuar(nodo.ChildNodes[1]);
+                                    nombre = nodo.ChildNodes[3].Token.Text;
+
+                                    nuevo_f = new Funcion(tipo, nombre,false,privacidad);
+
+                                    nuevo_f.SetArreglor(true);
+
+                                    parametro_funcion = true;
+                                    Actuar(nodo.ChildNodes[5]);
+                                    parametro_funcion = false;
+
+                                    Actuar(nodo.ChildNodes[8]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+
+
+                                }
+                                else if (nodo.ChildNodes[1].Term.Name.ToString().Equals("Conservar"))
+                                {
+                                    final = true;
+
+                                    tipo = Actuar(nodo.ChildNodes[2]);
+                                    nombre = nodo.ChildNodes[4].Token.Text;
+
+                                    nuevo_f = new Funcion(tipo, nombre, final, privacidad);
+
+                                    nuevo_f.SetArreglor(true);
+
+                                    Actuar(nodo.ChildNodes[8]);
+
+                                    clase_n.funciones.Insertar(nuevo_f);
+
+
+                                }
+
+
+                            }
+ 
 
                         }
 
