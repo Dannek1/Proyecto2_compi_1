@@ -8,7 +8,7 @@ namespace Proyecto2_compi
 {
     class Variable
     {
-        Arreglo valores;
+        Arreglo[] valores;
         bool arreglo;
         private string nombre;
         private string valor;
@@ -80,7 +80,7 @@ namespace Proyecto2_compi
 
         }
 
-        public Variable(string t, string n, string v, int dimensiones)
+        public Variable(string t, string n, string v, int dimensiones,string valoresN)
         {
             nombre = n;
             tipo = t;
@@ -89,14 +89,22 @@ namespace Proyecto2_compi
             siguiente = null;
             anterior = null;
 
-            valores = new Arreglo();
+            valores = new Arreglo[dimensiones];
+            string[] dimension = valoresN.Split(',');
+
+            for(int x = 0; x < dimensiones; x++)
+            {
+                valores[x] = new Arreglo();
+                valores[x].SetMax(Convert.ToInt32(dimension[x]));
+            }
+
             arreglo = true;
             this.dimensiones = dimensiones;
             final = false;
 
         }
 
-        public Variable(string t, string n, string v, int dimensiones,bool f)
+        public Variable(string t, string n, string v, int dimensiones, string valoresN, bool f)
         {
             nombre = n;
             tipo = t;
@@ -105,7 +113,15 @@ namespace Proyecto2_compi
             siguiente = null;
             anterior = null;
 
-            valores = new Arreglo();
+            valores = new Arreglo[dimensiones];
+            string[] dimension = valoresN.Split(',');
+
+            for (int x = 0; x < dimensiones; x++)
+            {
+                valores[x] = new Arreglo();
+                valores[x].SetMax(Convert.ToInt32(dimension[x]));
+            }
+
             arreglo = true;
             this.dimensiones = dimensiones;
             final = f;

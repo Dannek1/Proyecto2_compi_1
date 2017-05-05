@@ -8,6 +8,8 @@ namespace Proyecto2_compi
 {
     class Arreglo
     {
+        private int maximo;
+        private int llenos = 0;
         Valores cabeza;
         Valores ultimo;
         Valores aux;
@@ -21,27 +23,52 @@ namespace Proyecto2_compi
 
         public void insertar(Valores nuevo)
         {
-            if (cabeza == null)
+            if (llenos < maximo)
             {
-                cabeza = nuevo;
+                llenos++;
+                if (cabeza == null)
+                {
+                    cabeza = nuevo;
 
-            }
-            else if (ultimo == null){
+                }
+                else if (ultimo == null)
+                {
 
-                ultimo = nuevo;
+                    ultimo = nuevo;
 
-                cabeza.siguiente = ultimo;
-                ultimo.anterior = cabeza;
+                    cabeza.siguiente = ultimo;
+                    ultimo.anterior = cabeza;
+                }
+                else
+                {
+                    aux = nuevo;
+
+                    ultimo.siguiente = aux;
+                    aux.anterior = ultimo;
+
+                    ultimo = aux;
+                }
             }
             else
             {
-                aux = nuevo;
-
-                ultimo.siguiente = aux;
-                aux.anterior = ultimo;
-
-                ultimo = aux;
+                Console.WriteLine("Arreglo lleno");
             }
+            
+        }
+
+        public void SetMax(int max)
+        {
+            maximo = max;
+        }
+
+        public int GetMax()
+        {
+            return maximo;
+        }
+
+        public int GetLLenos()
+        {
+            return llenos;
         }
     }
 }

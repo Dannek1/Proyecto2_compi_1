@@ -234,7 +234,6 @@ namespace Proyecto2_compi
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionesArreglo + " }" + finSentencia//11
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionArreglo + "}" + finSentencia//11
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + finSentencia//9
-                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "("+ ")" + finSentencia//10
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "(" + Parametros+ ")" + finSentencia;//11
 
             Declaracion.ErrorRule = SyntaxError + finSentencia;

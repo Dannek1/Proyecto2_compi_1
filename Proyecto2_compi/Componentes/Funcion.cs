@@ -9,8 +9,8 @@ namespace Proyecto2_compi
 {
     class Funcion
     {
-        string tipo;
-        string nombre;
+        private string tipo;
+        private string nombre;
         private bool arreglo;
         public Variables variables;
 
@@ -89,6 +89,11 @@ namespace Proyecto2_compi
         public bool IsArreglo()
         {
             return arreglo;
+        }
+
+        public string GetNombre()
+        {
+            return nombre;
         }
     }
 }

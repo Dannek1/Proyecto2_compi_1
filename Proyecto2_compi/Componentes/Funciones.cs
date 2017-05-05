@@ -46,5 +46,68 @@ namespace Proyecto2_compi
 
             }
         }
+
+        public bool ExisteF(string nombre)
+        {
+            bool respuesta = false;
+
+            aux = cabeza;
+
+            bool seguir = true;
+
+            while (seguir)
+            {
+                if (aux.GetNombre().Equals(nombre))
+                {
+                    respuesta = true;
+                    seguir = false;
+                }
+                else
+                {
+                    if (aux.siguiente != null)
+                    {
+                        aux = aux.siguiente;
+                    }
+                    else
+                    {
+                        respuesta = false;
+                        seguir = false;
+                    }
+                }
+            }
+
+            return respuesta;
+        }
+
+        public Funcion Existe(string nombre)
+        {
+            
+
+            aux = cabeza;
+
+            bool seguir = true;
+
+            while (seguir)
+            {
+                if (aux.GetNombre().Equals(nombre))
+                {
+                    seguir = false;
+                }
+                else
+                {
+                    if (aux.siguiente != null)
+                    {
+                        aux = aux.siguiente;
+                    }
+                    else
+                    {
+                        
+                        seguir = false;
+                    }
+                }
+            }
+
+            return aux;
+        }
     }
 }

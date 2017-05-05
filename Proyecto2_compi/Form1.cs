@@ -19,6 +19,7 @@ namespace Proyecto2_compi
         String graph = "";
         bool globales;
         bool parametro_funcion;
+        int dimension;
 
         Clases clases;
         Clase clase_n;
@@ -1108,9 +1109,47 @@ namespace Proyecto2_compi
                                     }
                                 }
                             }
-                            else //arreglo
+                            else
                             {
 
+                                dimension = 0;
+
+                                tipoV = Actuar(nodo.ChildNodes[1]);
+
+                                nombreV = Actuar(nodo.ChildNodes[3]);
+                                string[] nombres = nombreV.Split(',');
+
+                                string dimeniones=Actuar(nodo.ChildNodes[4]);
+
+                                if (nombres.Length > 1)
+                                {
+                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[cuenta],"",dimension,dimeniones);
+                                        
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[0], "", dimension, dimeniones);
+
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
                             }
                            
 
@@ -1153,6 +1192,251 @@ namespace Proyecto2_compi
                                         nuevo_f.variables.Insertar(nuevo);
                                     }
                                 }
+                            }
+                            else
+                            {
+                                dimension = 0;
+                                tipoV = Actuar(nodo.ChildNodes[2]);
+                                nombreV = Actuar(nodo.ChildNodes[4]);
+                                string[] nombres = nombreV.Split(',');
+
+                                string dimeniones = Actuar(nodo.ChildNodes[5]);
+
+
+                                if (nombres.Length > 1)
+                                {
+                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[cuenta],"",dimension, dimeniones, true);
+                                        
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[0], "", dimension, dimeniones, true);
+
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
+
+                            }
+                        }
+                        else if (nodo.ChildNodes.Count == 8)
+                        {
+                            dimension = 0;
+                            tipoV = Actuar(nodo.ChildNodes[1]);
+                            nombreV = Actuar(nodo.ChildNodes[3]);
+                            string[] nombres = nombreV.Split(',');
+
+                            string dimeniones = Actuar(nodo.ChildNodes[4]);
+
+                            if (clase_n.variables.Buscar_existe(nodo.ChildNodes[6].Token.Text))
+                            {
+                                clase_n.variables.Buscar(nodo.ChildNodes[6].Token.Text);
+
+                                valorV = clase_n.variables.aux.GetValor();
+
+                                if (nombres.Length > 1)
+                                {
+                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[cuenta],valorV, dimension,dimeniones,false);
+                                        
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, false);
+                                    
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
+
+
+
+                            }
+                            else if (nuevo_f.variables.Buscar_existe(nodo.ChildNodes[6].Token.Text))
+                            {
+                                nuevo_f.variables.Buscar(nodo.ChildNodes[6].Token.Text);
+                                valorV = nuevo_f.variables.aux.GetValor();
+
+                                if (nombres.Length > 1)
+                                {
+                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[cuenta], valorV, dimension, dimeniones, false);
+
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, false);
+
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                textBox2.Text += "No existe variable :\"" + nodo.ChildNodes[6].Token.Text + "\"";
+                            }
+
+                        }
+                        else if (nodo.ChildNodes.Count == 9)
+                        {
+                            dimension = 0;
+                            tipoV = Actuar(nodo.ChildNodes[2]);
+                            nombreV = Actuar(nodo.ChildNodes[4]);
+                            string[] nombres = nombreV.Split(',');
+
+                            string dimeniones = Actuar(nodo.ChildNodes[5]);
+
+                            if (clase_n.variables.Buscar_existe(nodo.ChildNodes[7].Token.Text))
+                            {
+                                clase_n.variables.Buscar(nodo.ChildNodes[7].Token.Text);
+
+                                valorV = clase_n.variables.aux.GetValor();
+
+                                if (nombres.Length > 1)
+                                {
+                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[cuenta], valorV, dimension, dimeniones, true);
+
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, true);
+
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
+
+
+
+                            }
+                            else if (nuevo_f.variables.Buscar_existe(nodo.ChildNodes[7].Token.Text))
+                            {
+                                nuevo_f.variables.Buscar(nodo.ChildNodes[7].Token.Text);
+                                valorV = nuevo_f.variables.aux.GetValor();
+
+                                if (nombres.Length > 1)
+                                {
+                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[cuenta], valorV, dimension, dimeniones, true);
+
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, true);
+
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                textBox2.Text += "No existe variable :\"" + nodo.ChildNodes[7].Token.Text + "\"";
+                            }
+
+                        }
+                        else if (nodo.ChildNodes.Count == 10)
+                        {
+                            if (nodo.ChildNodes[6].Token.Text.Equals("{"))
+                            {
+
+                            }
+                            else
+                            {
+                                dimension = 0;
+                                tipoV = Actuar(nodo.ChildNodes[1]);
+                                nombreV = Actuar(nodo.ChildNodes[3]);
+                                string[] nombres = nombreV.Split(',');
+
+                                string dimeniones = Actuar(nodo.ChildNodes[4]);
+
+                                string funcion = nodo.ChildNodes[6].Token.Text;
+
+                                if (clase_n.funciones.ExisteF(funcion))
+                                {
+                                    Funcion aux = clase_n.funciones.Existe(funcion);
+                                }
+
                             }
                         }
                             break;
@@ -1340,6 +1624,30 @@ namespace Proyecto2_compi
                         {
                             nuevo_f.parametros.Insertar(nuevo_P);
                         }
+
+                        break;
+                    }
+
+                case "Dimensiones":
+                    {
+                        if (nodo.ChildNodes.Count == 2)
+                        {
+                            resultado += Actuar(nodo.ChildNodes[0])+",";
+                            resultado += Actuar(nodo.ChildNodes[2]);
+                        }
+                        else
+                        {
+                            resultado += Actuar(nodo.ChildNodes[0]);
+
+                        }
+
+                        break;
+                    }
+
+                case "Dimension":
+                    {
+                        dimension++;
+                        resultado = Convert.ToString(Aritmeticas(nodo.ChildNodes[1]));
 
                         break;
                     }
