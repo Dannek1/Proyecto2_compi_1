@@ -8,12 +8,14 @@ namespace Proyecto2_compi
 {
     class Parametros
     {
+        private int contador;
         Parametro cabeza;
         Parametro ultimo;
         Parametro aux;
 
         public Parametros()
         {
+           
             cabeza = null;
             ultimo = null;
             aux = null;
@@ -21,6 +23,7 @@ namespace Proyecto2_compi
 
         public void Insertar(Parametro nuevo)
         {
+          
             if (cabeza == null)
             {
                 cabeza = nuevo;
@@ -44,5 +47,7 @@ namespace Proyecto2_compi
                 ultimo = aux;
             }
         }
+
+        
     }
 }

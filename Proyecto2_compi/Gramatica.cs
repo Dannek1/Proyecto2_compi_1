@@ -117,7 +117,7 @@ namespace Proyecto2_compi
 
 
             NonTerminal S = new NonTerminal("S"),
-                        Visibilidad=new NonTerminal("Visibilidad"),
+                        Visibilidad = new NonTerminal("Visibilidad"),
                         Extensiones = new NonTerminal("Extensiones"),
                         Extension = new NonTerminal("Extension"),
                         Cabeza = new NonTerminal("Cabeza"),
@@ -127,6 +127,7 @@ namespace Proyecto2_compi
                         Sentencias = new NonTerminal("Sentencias"),
                         Parametros = new NonTerminal("Parametros"),
                         Parametro = new NonTerminal("Parametro"),
+                        ParametrosV = new NonTerminal("ParamterosV"),
                         Sentencia = new NonTerminal("Sentencia"),
                         Declaracion = new NonTerminal("Declaracion"),
                         Asignacion = new NonTerminal("Asignacion"),
@@ -199,8 +200,11 @@ namespace Proyecto2_compi
 
             //13
             Parametros.Rule = Parametros + ","+ Parametro
-                            | Parametro;
+                            | Parametro
+                            | Parametros + "," + ParametrosV
+                            | ParametrosV;
 
+            ParametrosV.Rule = Operacion;
             //14
             Parametro.Rule = Tipo + ID;   
 
@@ -234,7 +238,7 @@ namespace Proyecto2_compi
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionesArreglo + " }" + finSentencia//11
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionArreglo + "}" + finSentencia//11
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + finSentencia//9
-                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "(" + Parametros+ ")" + finSentencia;//11
+                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" +ID + "(" + Parametros + ")" + finSentencia;//12
 
             Declaracion.ErrorRule = SyntaxError + finSentencia;
             //31

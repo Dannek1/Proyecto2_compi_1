@@ -14,8 +14,12 @@ namespace Proyecto2_compi
         private bool arreglo;
         public Variables variables;
 
+        private string retorno="";
+
         private bool final;
         private bool publico;
+
+        public int nParametros;
 
         public Funcion siguiente;
         public Funcion anterior;
@@ -28,7 +32,7 @@ namespace Proyecto2_compi
             nombre = n;
             tipo = t;
 
-            
+            nParametros = 0;
             variables = new Variables();
             parametros = null;
 
@@ -45,6 +49,7 @@ namespace Proyecto2_compi
         {
             nombre = n;
             tipo = t;
+            nParametros = 0;
 
             variables = new Variables();
             parametros = null;
@@ -60,6 +65,7 @@ namespace Proyecto2_compi
         {
             nombre = n;
             tipo = t;
+            nParametros = 0;
 
             variables = new Variables();
             parametros = null;
@@ -94,6 +100,42 @@ namespace Proyecto2_compi
         public string GetNombre()
         {
             return nombre;
+        }
+
+        public string GetTipo()
+        {
+            return tipo;
+        }
+
+        public string GetRetorno()
+        {
+            return retorno;
+        }
+
+        public bool TieneParametros()
+        {
+            bool respuesta = false;
+
+            if (parametros == null)
+            {
+                respuesta = false;
+            }
+            else
+            {
+                respuesta = true;
+            }
+
+            return respuesta;
+        }
+
+        public void AumentarParametros()
+        {
+            nParametros++;
+        }
+
+        public int getNumeroParamteros()
+        {
+            return nParametros;
         }
     }
 }

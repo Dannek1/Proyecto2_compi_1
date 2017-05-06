@@ -122,6 +122,32 @@ namespace Proyecto2_compi
                 valores[x].SetMax(Convert.ToInt32(dimension[x]));
             }
 
+            if (valoresN.Equals(""))
+            {
+
+            }
+            else
+            {
+                string[] valores_D = valoresN.Split(';');
+
+                if (valores_D.Length > 1)
+                {
+
+                    for(int x = 0; x < valores_D.Length; x++)
+                    {
+                        string[] valores_f = valores_D[x].Split(',');
+                        Agregar_Valores(valores_f, x);
+                    }
+
+                }
+                else
+                {
+                    string[] valores_f = valores_D[0].Split(',');
+                    Agregar_Valores(valores_f, 0);
+                    
+                }
+            }
+
             arreglo = true;
             this.dimensiones = dimensiones;
             final = f;
@@ -158,6 +184,23 @@ namespace Proyecto2_compi
         public bool IsFinal()
         {
             return final;
+        }
+
+        void Agregar_Valores(string[] datos,int dimension)
+        {
+            int tope = datos.Length;
+
+            if (tope > 1)
+            {
+                Valores nuevo = new Valores(datos[0], dimension);
+            }
+            else
+            {
+                for(int x = 0; x < tope; x++)
+                {
+                    Valores nuevo = new Valores(datos[x], dimension);
+                }
+            }
         }
     }
 }

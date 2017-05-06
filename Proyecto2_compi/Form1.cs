@@ -1419,6 +1419,93 @@ namespace Proyecto2_compi
                         {
                             if (nodo.ChildNodes[6].Token.Text.Equals("{"))
                             {
+                                if (nodo.ChildNodes[7].Term.Name.ToString().Equals("AsignacionesArreglo"))
+                                {
+                                    dimension = 0;
+                                    tipoV = Actuar(nodo.ChildNodes[1]);
+                                    nombreV = Actuar(nodo.ChildNodes[3]);
+                                    string[] nombres = nombreV.Split(',');
+
+                                    string dimeniones = Actuar(nodo.ChildNodes[4]);
+
+                                    valorV = Actuar(nodo.ChildNodes[7]);
+
+
+                                    if (nombres.Length > 1)
+                                    {
+                                        for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                        {
+                                            Variable nuevo = new Variable(tipoV, nombres[cuenta], valorV, dimension, dimeniones, false);
+
+                                            if (globales)
+                                            {
+                                                clase_n.variables.Insertar(nuevo);
+                                            }
+                                            else
+                                            {
+                                                nuevo_f.variables.Insertar(nuevo);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, false);
+
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+
+
+                                }
+                                else if (nodo.ChildNodes[7].Term.Name.ToString().Equals("AsignacionArreglo"))
+                                {
+                                    dimension = 0;
+                                    tipoV = Actuar(nodo.ChildNodes[1]);
+                                    nombreV = Actuar(nodo.ChildNodes[3]);
+                                    string[] nombres = nombreV.Split(',');
+
+                                    string dimeniones = Actuar(nodo.ChildNodes[4]);
+
+                                    valorV= Actuar(nodo.ChildNodes[7]);
+
+
+                                    if (nombres.Length > 1)
+                                    {
+                                        for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                        {
+                                            Variable nuevo = new Variable(tipoV, nombres[cuenta], valorV, dimension, dimeniones, false);
+
+                                            if (globales)
+                                            {
+                                                clase_n.variables.Insertar(nuevo);
+                                            }
+                                            else
+                                            {
+                                                nuevo_f.variables.Insertar(nuevo);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, false);
+
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+
+                                }
 
                             }
                             else
@@ -1435,8 +1522,268 @@ namespace Proyecto2_compi
                                 if (clase_n.funciones.ExisteF(funcion))
                                 {
                                     Funcion aux = clase_n.funciones.Existe(funcion);
+
+                                    if (aux.GetTipo().Equals(tipoV))
+                                    {
+                                        valorV = aux.GetRetorno();
+
+
+                                        if (nombres.Length > 1)
+                                        {
+                                            for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                            {
+                                                Variable nuevo = new Variable(tipoV, nombres[cuenta], valorV, dimension, dimeniones, false);
+
+                                                if (globales)
+                                                {
+                                                    clase_n.variables.Insertar(nuevo);
+                                                }
+                                                else
+                                                {
+                                                    nuevo_f.variables.Insertar(nuevo);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, false);
+
+                                            if (globales)
+                                            {
+                                                clase_n.variables.Insertar(nuevo);
+                                            }
+                                            else
+                                            {
+                                                nuevo_f.variables.Insertar(nuevo);
+                                            }
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        textBox2.Text += "Tipos no Compatibles";
+                                    }
+                                }
+                                else
+                                {
+                                    textBox2.Text += "No existe la funcion :\"" + nodo.ChildNodes[6].Token.Text + "\"";
                                 }
 
+                            }
+                        }
+                        else if (nodo.ChildNodes.Count == 11)
+                        {
+                            if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Conservar"))
+                            {
+                                dimension = 0;
+                                tipoV = Actuar(nodo.ChildNodes[1]);
+                                nombreV = Actuar(nodo.ChildNodes[3]);
+                                string[] nombres = nombreV.Split(',');
+
+                                string dimeniones = Actuar(nodo.ChildNodes[4]);
+
+                                valorV = Actuar(nodo.ChildNodes[7]);
+
+
+                                if (nombres.Length > 1)
+                                {
+                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                    {
+                                        Variable nuevo = new Variable(tipoV, nombres[cuenta], valorV, dimension, dimeniones, true);
+
+                                        if (globales)
+                                        {
+                                            clase_n.variables.Insertar(nuevo);
+                                        }
+                                        else
+                                        {
+                                            nuevo_f.variables.Insertar(nuevo);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, true);
+
+                                    if (globales)
+                                    {
+                                        clase_n.variables.Insertar(nuevo);
+                                    }
+                                    else
+                                    {
+                                        nuevo_f.variables.Insertar(nuevo);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                dimension = 0;
+                                tipoV = Actuar(nodo.ChildNodes[1]);
+                                nombreV = Actuar(nodo.ChildNodes[3]);
+                                string[] nombres = nombreV.Split(',');
+                                
+
+                                string dimeniones = Actuar(nodo.ChildNodes[4]);
+
+                                string valoresp= Actuar(nodo.ChildNodes[7]);
+
+                                string funcion = nodo.ChildNodes[6].Token.Text;
+
+                                if (clase_n.funciones.ExisteF(funcion))
+                                {
+                                    Funcion aux = clase_n.funciones.Existe(funcion);
+
+                                    if (aux.GetTipo().Equals(tipoV))
+                                    {
+                                        if (aux.TieneParametros())
+                                        {
+
+                                            string[] cantparametros = funcion.Split(',');
+
+                                            if(cantparametros.Length==aux.nParametros)
+                                            {
+                                                valorV = aux.GetRetorno();
+                                                if (nombres.Length > 1)
+                                                {
+                                                    for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                                    {
+                                                        Variable nuevo = new Variable(tipoV, nombres[cuenta], valorV, dimension, dimeniones, false);
+
+                                                        if (globales)
+                                                        {
+                                                            clase_n.variables.Insertar(nuevo);
+                                                        }
+                                                        else
+                                                        {
+                                                            nuevo_f.variables.Insertar(nuevo);
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, false);
+
+                                                    if (globales)
+                                                    {
+                                                        clase_n.variables.Insertar(nuevo);
+                                                    }
+                                                    else
+                                                    {
+                                                        nuevo_f.variables.Insertar(nuevo);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                textBox2.Text += "Cantidad de Parametros errornea en  funcion :\"" + funcion + "\"";
+                                            }    
+
+
+                                            
+                                        }
+                                        else
+                                        {
+                                            textBox2.Text += "La funcion :\"" + funcion + "\" no lleva parametros";
+                                        }
+
+                                        
+
+                                    }
+                                    else
+                                    {
+                                        textBox2.Text += "Tipos no Compatibles";
+                                    }
+                                }
+                                else
+                                {
+                                    textBox2.Text += "No existe la funcion :\"" + nodo.ChildNodes[6].Token.Text + "\"";
+                                }
+
+
+                            }
+                        }
+                        else if (nodo.ChildNodes.Count == 12    )
+                        {
+                            dimension = 0;
+                            tipoV = Actuar(nodo.ChildNodes[2]);
+                            nombreV = Actuar(nodo.ChildNodes[4]);
+                            string[] nombres = nombreV.Split(',');
+
+
+                            string dimeniones = Actuar(nodo.ChildNodes[5]);
+
+                            string valoresp = Actuar(nodo.ChildNodes[9]);
+
+                            string funcion = nodo.ChildNodes[7].Token.Text;
+
+                            if (clase_n.funciones.ExisteF(funcion))
+                            {
+                                Funcion aux = clase_n.funciones.Existe(funcion);
+
+                                if (aux.GetTipo().Equals(tipoV))
+                                {
+                                    if (aux.TieneParametros())
+                                    {
+
+                                        string[] cantparametros = funcion.Split(',');
+
+                                        if (cantparametros.Length == aux.nParametros)
+                                        {
+                                            valorV = aux.GetRetorno();
+                                            if (nombres.Length > 1)
+                                            {
+                                                for (int cuenta = 0; cuenta < nombres.Length; cuenta++)
+                                                {
+                                                    Variable nuevo = new Variable(tipoV, nombres[cuenta], valorV, dimension, dimeniones, true);
+                                                    
+                                                    if (globales)
+                                                    {
+                                                        clase_n.variables.Insertar(nuevo);
+                                                    }
+                                                    else
+                                                    {
+                                                        nuevo_f.variables.Insertar(nuevo);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Variable nuevo = new Variable(tipoV, nombres[0], valorV, dimension, dimeniones, true);
+
+                                                if (globales)
+                                                {
+                                                    clase_n.variables.Insertar(nuevo);
+                                                }
+                                                else
+                                                {
+                                                    nuevo_f.variables.Insertar(nuevo);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            textBox2.Text += "Cantidad de Parametros errornea en  funcion :\"" + funcion + "\"";
+                                        }
+
+
+
+                                    }
+                                    else
+                                    {
+                                        textBox2.Text += "La funcion :\"" + funcion + "\" no lleva parametros";
+                                    }
+
+
+
+                                }
+                                else
+                                {
+                                    textBox2.Text += "Tipos no Compatibles";
+                                }
+                            }
+                            else
+                            {
+                                textBox2.Text += "No existe la funcion :\"" + nodo.ChildNodes[6].Token.Text + "\"";
                             }
                         }
                             break;
@@ -1623,6 +1970,7 @@ namespace Proyecto2_compi
                         if (parametro_funcion)
                         {
                             nuevo_f.parametros.Insertar(nuevo_P);
+                            nuevo_f.AumentarParametros();
                         }
 
                         break;
@@ -1652,6 +2000,38 @@ namespace Proyecto2_compi
                         break;
                     }
 
+                case "AsignacionArreglo":
+                    {
+                        if (nodo.ChildNodes.Count == 3)
+                        {
+                            resultado += Actuar(nodo.ChildNodes[0]) + ",";
+                            resultado += Actuar(nodo.ChildNodes[2]);
+                        }
+                        else
+                        {
+                            resultado += Actuar(nodo.ChildNodes[0]);
+
+                        }
+
+                        break;
+                    }
+
+                case "AsignacionesArreglo":
+                    {
+                        if (nodo.ChildNodes.Count == 4)
+                        {
+                            resultado += Actuar(nodo.ChildNodes[0]) + ";";
+                            resultado += Actuar(nodo.ChildNodes[3]);
+                        }
+                        else
+                        {
+                            resultado += Actuar(nodo.ChildNodes[1]);
+
+                        }
+
+
+                        break;
+                    }
 
 
             }
