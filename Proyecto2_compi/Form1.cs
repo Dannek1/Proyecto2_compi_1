@@ -2400,7 +2400,117 @@ namespace Proyecto2_compi
 
                 case "Para":
                     {
+                        string nombre;
 
+                        if (nodo.ChildNodes.Count == 13)
+                        {
+                            nombre=nodo.ChildNodes[1].Token.Text;
+
+                            if (clase_n.variables.Buscar_existe(nombre))
+                            {
+                                Variable aux=clase_n.variables.Buscar(nombre);
+
+                                aux.SetValor(Convert.ToString(Aritmeticas(nodo.ChildNodes[3])));
+                                double control = Aritmeticas(nodo.ChildNodes[3]);
+                                string logica_inicial = "true";
+
+                                logica_inicial= Actuar(nodo.ChildNodes[5]);
+
+                                while (logica_inicial.Equals("true"))
+                                {
+                                    Actuar(nodo.ChildNodes[11]);
+
+                                    if (nodo.ChildNodes[8].Token.Terminal.Name.ToString() == "aumentar")
+                                    {
+                                        control++;
+                                    }
+                                    else if (nodo.ChildNodes[8].Token.Terminal.Name.ToString() == "disminuir")
+                                    {
+                                        control--;
+                                    }
+
+                                    logica_inicial = Actuar(nodo.ChildNodes[5]);
+                                    aux.SetValor(Convert.ToString(control));
+                                }
+
+                            }
+                            else if (nuevo_f.variables.Buscar_existe(nombre))
+                            {
+                                Variable aux = nuevo_f.variables.Buscar(nombre);
+
+                                aux.SetValor(Convert.ToString(Aritmeticas(nodo.ChildNodes[3])));
+                                double control = Aritmeticas(nodo.ChildNodes[3]);
+                                string logica_inicial = "true";
+
+                                logica_inicial = Actuar(nodo.ChildNodes[5]);
+
+                                while (logica_inicial.Equals("true"))
+                                {
+                                    Actuar(nodo.ChildNodes[11]);
+
+                                    if (nodo.ChildNodes[8].Token.Terminal.Name.ToString() == "aumentar")
+                                    {
+                                        control++;
+                                    }
+                                    else if (nodo.ChildNodes[8].Token.Terminal.Name.ToString() == "disminuir")
+                                    {
+                                        control--;
+                                    }
+
+                                    logica_inicial = Actuar(nodo.ChildNodes[5]);
+                                    aux.SetValor(Convert.ToString(control));
+                                }
+                            }
+                            else
+                            {
+                                textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") No existe variable :\"" + nombre + "\"";
+                            }
+
+                        }
+                        else if (nodo.ChildNodes.Count == 15)
+                        {
+                            nombre = nodo.ChildNodes[3].Token.Text;
+
+                            if (clase_n.variables.Buscar_existe(nombre))
+                            {
+                                textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") Ya existe variable :\"" + nombre + "\"";
+                            }
+                            else if (nuevo_f.variables.Buscar_existe(nombre))
+                            {
+                                textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") Ya existe variable :\"" + nombre + "\"";
+                            }
+                            else
+                            {
+                                string tipo = Actuar(nodo.ChildNodes[0]);
+                                Variable nuevo = new Variable(tipo, nombre);
+
+                                double control = Aritmeticas(nodo.ChildNodes[5]);
+                                nuevo.SetValor(Convert.ToString(control));
+
+                                string logica_inicial = "true";
+
+                                logica_inicial = Actuar(nodo.ChildNodes[7]);
+
+                                while (logica_inicial.Equals("true"))
+                                {
+                                    Actuar(nodo.ChildNodes[13]);
+
+                                    if (nodo.ChildNodes[10].Token.Terminal.Name.ToString() == "aumentar")
+                                    {
+                                        control++;
+                                    }
+                                    else if (nodo.ChildNodes[10].Token.Terminal.Name.ToString() == "disminuir")
+                                    {
+                                        control--;
+                                    }
+
+                                    logica_inicial = Actuar(nodo.ChildNodes[5]);
+                                    nuevo.SetValor(Convert.ToString(control));
+                                }
+
+                            }
+
+                        }
                         break;
                     }
 
