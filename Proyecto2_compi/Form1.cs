@@ -2514,6 +2514,35 @@ namespace Proyecto2_compi
                         break;
                     }
 
+
+                case "Mientras":
+                    {
+
+                        string condicion = Actuar(nodo.ChildNodes[1]);
+
+                        while (condicion.Equals("true"))
+                        {
+                            Actuar(nodo.ChildNodes[4]);
+                        }
+                        break;
+                    }
+
+                case "Hacer":
+                    {
+                        Actuar(nodo.ChildNodes[2]);
+
+                        string condicion = Actuar(nodo.ChildNodes[6]);
+
+                        while (condicion.Equals("true"))
+                        {
+                            Actuar(nodo.ChildNodes[2]);
+                        }
+                        break;
+
+
+                        break;
+                    }
+
             }
 
             return resultado;

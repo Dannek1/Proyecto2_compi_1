@@ -219,7 +219,8 @@ namespace Proyecto2_compi
                             | Funciones
                             | Si
                             | Para
-                            | Mientras;
+                            | Mientras
+                            | Hacer;
 
 
             //24
