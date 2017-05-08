@@ -47,29 +47,40 @@ namespace Proyecto2_compi
 
         public bool Buscar_existe(string nombre)
         {
+
             bool respuesta = false;
             bool seguir = true;
-            aux = cabeza;
 
-            while (seguir)
+
+            if (cabeza != null)
             {
-                if (aux.GetNombre().Equals(nombre))
+                aux = cabeza;
+
+                while (seguir)
                 {
-                    seguir = false;
-                    respuesta = true;
-                }
-                else
-                {
-                    if (aux.siguiente != null)
+                    if (aux.GetNombre().Equals(nombre))
                     {
-                        aux = aux.siguiente;
+                        seguir = false;
+                        respuesta = true;
                     }
                     else
                     {
-                        seguir = false;
+                        if (aux.siguiente != null)
+                        {
+                            aux = aux.siguiente;
+                        }
+                        else
+                        {
+                            seguir = false;
+                        }
                     }
                 }
             }
+            else
+            {
+                respuesta = false;
+            }
+            
 
 
             return respuesta;

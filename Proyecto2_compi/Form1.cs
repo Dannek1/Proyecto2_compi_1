@@ -20,6 +20,7 @@ namespace Proyecto2_compi
         bool globales;
         bool parametro_funcion;
         int dimension;
+        string tipo_Temp;
 
         Clases clases;
         Clase clase_n;
@@ -818,6 +819,8 @@ namespace Proyecto2_compi
                             {
                                 clase_n.variables.Buscar(variable);
 
+                                tipo_Temp = clase_n.variables.aux.GetTipo();
+
                                 valor = Actuar(nodo.ChildNodes[2]);
 
                                 clase_n.variables.aux.SetValor(valor);
@@ -834,7 +837,8 @@ namespace Proyecto2_compi
                                 textBox2.Text += "(Error en "+nodo.Token.Location.Line+","+ nodo.Token.Location.Column + ") No existe variable :\"" + variable + "\"";
                             }
 
-                        } else if (nodo.ChildNodes.Count == 3)
+                        }
+                        else if (nodo.ChildNodes.Count == 3)
                         {
                             bool aumentar=false;
                             bool disminuir = false;
@@ -1818,11 +1822,104 @@ namespace Proyecto2_compi
                         break;
                     }
 
+                case "Operaciones":
+                    {
+                        if (nodo.ChildNodes.Count == 3)
+                        {
+                            resultado += Actuar(nodo.ChildNodes[0]) + ",";
+                            resultado += Actuar(nodo.ChildNodes[2]);
+                        }
+                        else
+                        {
+                            resultado += Actuar(nodo.ChildNodes[0]);
+
+                        }
+
+                        
+                        break;
+                    }
+
+                case "Funciones":
+                    {
+
+                        string funcion;
+
+                        funcion= nodo.ChildNodes[0].Token.Value.ToString();
+
+                        if (clase_n.funciones.ExisteF(funcion))
+                        {
+                            clase_n.funciones.Existe(funcion);
+
+                            if (nodo.ChildNodes.Count == 4)
+                            {
+                                //Operar sin Parametrso
+                            }
+                            else
+                            {
+                                string param = Actuar(nodo.ChildNodes[2]);
+                                
+                            }
+                        }
+                        else
+                        {
+                            textBox2.Text += "No existe Funcion :\"" + nodo.ChildNodes[0].Token.Text + "\"";
+                        }
+
+                        break;
+                    }
+
                 case "Operacion":
                     {
                         if (nodo.ChildNodes.Count == 3)
                         {
-                            resultado = Convert.ToString(Aritmeticas(nodo));
+
+                            if (nodo.ChildNodes[0].Token.Text.Equals("("))
+                            {
+                                resultado = Actuar(nodo.ChildNodes[1]);
+                            }
+                            else
+                            {
+                                resultado = Convert.ToString(Aritmeticas(nodo));
+                            }
+
+                                
+                        }
+                        else if (nodo.ChildNodes.Count == 4)
+                        {
+                            if (clase_n.variables.Buscar_existe(nodo.ChildNodes[0].Token.Text))
+                            {
+                                clase_n.variables.Buscar(nodo.ChildNodes[0].Token.Text);
+
+                                if (clase_n.variables.aux.IsArreglo())
+                                {
+                                    Double lugar= Aritmeticas(nodo.ChildNodes[3]);
+
+                                    resultado = clase_n.variables.aux.GetValor_Arr(0, Convert.ToInt32(Aritmeticas(nodo)));
+                                }
+                                else
+                                {
+                                    textBox2.Text += "La variable :\"" + nodo.ChildNodes[0].Token.Text + "\" no es Arreglo";
+                                }
+
+                            }
+                            else if (nuevo_f.variables.Buscar_existe(nodo.ChildNodes[0].Token.Text))
+                            {
+                                nuevo_f.variables.Buscar(nodo.ChildNodes[0].Token.Text);
+                                if (nuevo_f.variables.aux.IsArreglo())
+                                {
+                                    Double lugar = Aritmeticas(nodo.ChildNodes[3]);
+
+                                    resultado = nuevo_f.variables.aux.GetValor_Arr(0, Convert.ToInt32(Aritmeticas(nodo)));
+                                }
+                                else
+                                {
+                                    textBox2.Text += "La variable :\"" + nodo.ChildNodes[0].Token.Text + "\" no es Arreglo";
+                                }
+                            }
+                            else
+                            {
+                                textBox2.Text += "No existe variable :\"" + nodo.ChildNodes[0].Token.Text + "\"";
+                            }
                         }
                         else
                         {
@@ -2033,13 +2130,254 @@ namespace Proyecto2_compi
                         break;
                     }
 
+                case "Si":
+                    {
+                        string logica;
+                        bool hacer = false;
+                        logica = Actuar(nodo.ChildNodes[1]);
+
+                        if (logica.Equals("true"))
+                        {
+                            hacer = true;
+                        }
+                        else
+                        {
+                            hacer = false;
+                        }
+
+                        if (nodo.ChildNodes.Count == 5)
+                        {
+                            if (hacer)
+                            {
+                                resultado = Actuar(nodo.ChildNodes[4]);
+                            }
+                        }
+                        else
+                        {
+                            if (hacer)
+                            {
+                                resultado = Actuar(nodo.ChildNodes[4]);
+                            }
+                            else
+                            {
+                                resultado = Actuar(nodo.ChildNodes[7]);
+                            }
+
+                        }
+
+
+                        break;
+                    }
+
+
+                case "Condicion":
+                    {
+                        resultado = Actuar(nodo.ChildNodes[0]);
+                        break;
+                    }
+
+                case "Logica":
+                    {
+                        if (nodo.ChildNodes.Count == 3)
+                        {
+                            if (nodo.ChildNodes[0].Token.Text.Equals("("))
+                            {
+                                resultado = Actuar(nodo.ChildNodes[1]);
+                            }
+                            else
+                            {
+                                string operador1 = Actuar(nodo.ChildNodes[0]);
+                                string operador2 = Actuar(nodo.ChildNodes[2]);
+
+                                if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "or")
+                                {
+                                    if(operador1.Equals("true") || operador2.Equals("true"))
+                                    {
+                                        resultado = "true";
+                                    }
+                                    else
+                                    {
+                                        resultado = "false";
+                                    }
+
+
+                                }
+                                else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "and")
+                                {
+                                    if (operador1.Equals("true") && operador2.Equals("true"))
+                                    {
+                                        resultado = "true";
+                                    }
+                                    else
+                                    {
+                                        resultado = "false";
+                                    }
+                                }
+                                else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "Nand")
+                                {
+                                    if (operador1.Equals("true") && operador2.Equals("true"))
+                                    {
+                                        resultado = "false";
+                                    }
+                                    else
+                                    {
+                                        resultado = "true";
+                                    }
+                                }
+                                else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "Nor")
+                                {
+                                    if (operador1.Equals("false") && operador2.Equals("false"))
+                                    {
+                                        resultado = "true";
+                                    }
+                                    else
+                                    {
+                                        resultado = "false";
+                                    }
+                                }
+                                else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "xor")
+                                {
+                                    if (operador1.Equals("false") || operador2.Equals("false"))
+                                    {
+                                        resultado = "false";
+                                    }
+                                    else if (operador1.Equals("true") || operador2.Equals("true"))
+                                    {
+                                        resultado = "false";
+                                    }
+                                    else
+                                    {
+                                        resultado = "true";
+                                    }
+                                }
+                                
+                            }
+                        }
+                        else if (nodo.ChildNodes.Count == 2)
+                        {
+                            string operador1 = Actuar(nodo.ChildNodes[1]);
+
+                            if (operador1.Equals("false"))
+                            {
+                                resultado = "true";
+                            }
+                            else
+                            {
+                                resultado = "false";
+                            }
+                        }
+                        else
+                        {
+                            resultado = Actuar(nodo.ChildNodes[1]);
+
+                        }
+
+                        break;
+                    }
+
+                case "Relacional":
+                    {
+                        if (nodo.ChildNodes.Count == 3)
+                        {
+                            if (nodo.ChildNodes[0].Token.Text.Equals("("))
+                            {
+                                resultado = Actuar(nodo.ChildNodes[1]);
+                            }
+                            else
+                            {
+                                double operador1 = Aritmeticas(nodo.ChildNodes[0]);
+                                double operador2 = Aritmeticas(nodo.ChildNodes[2]);
+
+                                if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "igual")
+                                {
+                                    if (operador1==operador2)
+                                    {
+                                        resultado = "true";
+                                    }
+                                    else
+                                    {
+                                        resultado = "false";
+                                    }
+
+
+                                }
+                                else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "diferente")
+                                {
+                                    if (operador1 != operador2)
+                                    {
+                                        resultado = "true";
+                                    }
+                                    else
+                                    {
+                                        resultado = "false";
+                                    }
+
+                                }
+                                else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "menor")
+                                {
+                                    if (operador1 < operador2)
+                                    {
+                                        resultado = "true";
+                                    }
+                                    else
+                                    {
+                                        resultado = "false";
+                                    }
+
+                                }
+                                else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "mayor")
+                                {
+                                    if (operador1 > operador2)
+                                    {
+                                        resultado = "true";
+                                    }
+                                    else
+                                    {
+                                        resultado = "false";
+                                    }
+
+                                }
+                                else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "menor_que")
+                                {
+                                    if (operador1 <= operador2)
+                                    {
+                                        resultado = "true";
+                                    }
+                                    else
+                                    {
+                                        resultado = "false";
+                                    }
+
+                                }
+                                else if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "mayor_que")
+                                {
+                                    if (operador1 > operador2)
+                                    {
+                                        resultado = "true";
+                                    }
+                                    else
+                                    {
+                                        resultado = "false";
+                                    }
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            resultado = Actuar(nodo.ChildNodes[1]);
+
+                        }
+                        break;
+                    }
+
 
             }
 
             return resultado;
         }
 
-        double Aritmeticas(ParseTreeNode nodo)
+            double Aritmeticas(ParseTreeNode nodo)
         {
             double resultado = 0;
 
@@ -2093,6 +2431,10 @@ namespace Proyecto2_compi
 
 
                             }
+                            else
+                            {
+
+                            }
 
 
                         }
@@ -2112,6 +2454,8 @@ namespace Proyecto2_compi
                     }
 
                 
+
+
             }
 
 

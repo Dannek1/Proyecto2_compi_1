@@ -70,5 +70,37 @@ namespace Proyecto2_compi
         {
             return llenos;
         }
+
+        public string ObtenerValor(int indice)
+        {
+            string respuesta="";
+
+            aux = cabeza;
+
+            bool seguir = true;
+
+            while (seguir)
+            {
+                if (aux.GetIndice() == indice)
+                {
+                    respuesta = aux.GetValor();
+                    seguir = false;
+                }
+                else
+                {
+                    if (aux.siguiente != null)
+                    {
+                        aux = aux.siguiente;
+                    }
+                    else
+                    {
+                        seguir = false;
+                    }
+                }
+            }
+
+
+            return respuesta;
+        }
     }
 }

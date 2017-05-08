@@ -51,30 +51,40 @@ namespace Proyecto2_compi
         {
             bool respuesta = false;
 
-            aux = cabeza;
-
-            bool seguir = true;
-
-            while (seguir)
+            if (cabeza != null)
             {
-                if (aux.GetNombre().Equals(nombre))
+                aux = cabeza;
+
+                bool seguir = true;
+
+
+                while (seguir)
                 {
-                    respuesta = true;
-                    seguir = false;
-                }
-                else
-                {
-                    if (aux.siguiente != null)
+                    if (aux.GetNombre().Equals(nombre))
                     {
-                        aux = aux.siguiente;
+                        respuesta = true;
+                        seguir = false;
                     }
                     else
                     {
-                        respuesta = false;
-                        seguir = false;
+                        if (aux.siguiente != null)
+                        {
+                            aux = aux.siguiente;
+                        }
+                        else
+                        {
+                            respuesta = false;
+                            seguir = false;
+                        }
                     }
                 }
             }
+            else
+            {
+                respuesta = false;
+            }
+
+           
 
             return respuesta;
         }

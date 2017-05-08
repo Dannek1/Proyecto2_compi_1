@@ -8,8 +8,8 @@ namespace Proyecto2_compi
 {
     class Valores
     {
-        string valor;
-        int indice;
+        private string valor;
+        private int indice;
         public Valores siguiente;
         public Valores anterior;
 
@@ -20,6 +20,16 @@ namespace Proyecto2_compi
 
             siguiente = null;
             anterior = null;
+        }
+
+        public string GetValor()
+        {
+            return valor;
+        }
+
+        public int GetIndice()
+        {
+            return indice;
         }
     }
 }

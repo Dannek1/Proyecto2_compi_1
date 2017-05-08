@@ -9,7 +9,7 @@ namespace Proyecto2_compi
     class Variable
     {
         Arreglo[] valores;
-        bool arreglo;
+        private bool arreglo;
         private string nombre;
         private string valor;
         private string tipo;
@@ -154,6 +154,10 @@ namespace Proyecto2_compi
 
         }
 
+        public bool IsArreglo()
+        {
+            return arreglo;
+        }
 
         public void Asignar(string va)
         {
@@ -201,6 +205,15 @@ namespace Proyecto2_compi
                     Valores nuevo = new Valores(datos[x], dimension);
                 }
             }
+        }
+
+        public string GetValor_Arr(int dimension,int indice)
+        {
+            string respuesta = "";
+
+            respuesta=valores[dimension].ObtenerValor(indice);
+
+            return respuesta;
         }
     }
 }

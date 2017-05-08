@@ -89,9 +89,9 @@ namespace Proyecto2_compi
             RegexBasedTerminal Or = new RegexBasedTerminal("or", "\\|\\|");
             RegexBasedTerminal and = new RegexBasedTerminal("and", "&&");
             RegexBasedTerminal Nand = new RegexBasedTerminal("Nand", "!&&");
-            RegexBasedTerminal Nor = new RegexBasedTerminal("Nand", "!\\|\\|");
+            RegexBasedTerminal Nor = new RegexBasedTerminal("Nor", "!\\|\\|");
             RegexBasedTerminal Xor = new RegexBasedTerminal("xor", "&\\|");
-            RegexBasedTerminal not = new RegexBasedTerminal("xor", "!");
+            RegexBasedTerminal not = new RegexBasedTerminal("not", "!");
 
           
 
@@ -199,10 +199,9 @@ namespace Proyecto2_compi
             Componente.ErrorRule = SyntaxError + finCuerpo;
 
             //13
-            Parametros.Rule = Parametros + ","+ Parametro
-                            | Parametro
-                            | Parametros + "," + ParametrosV
-                            | ParametrosV;
+            Parametros.Rule = Parametros + "," + Parametro
+                            | Parametro;
+                           
 
             ParametrosV.Rule = Operacion;
             //14
@@ -234,11 +233,11 @@ namespace Proyecto2_compi
                             | Rvar+ Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionArreglo + "}" + finSentencia//10
                             | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + finSentencia//8
                             | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID +"("+ ")" + finSentencia//10
-                            | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + "(" + Parametros+ ")" + finSentencia//11
+                            | Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + "(" + Operaciones + ")" + finSentencia//11
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionesArreglo + " }" + finSentencia//11
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + "{" + AsignacionArreglo + "}" + finSentencia//11
                             | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" + ID + finSentencia//9
-                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" +ID + "(" + Parametros + ")" + finSentencia;//12
+                            | Conservar + Rvar + Tipo + Rarreglo + Nombres + Dimensiones + "=" +ID + "(" + Operaciones + ")" + finSentencia;//12
 
             Declaracion.ErrorRule = SyntaxError + finSentencia;
             //31
