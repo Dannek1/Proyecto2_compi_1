@@ -21,6 +21,7 @@ namespace Proyecto2_compi
         bool parametro_funcion;
         int dimension;
         string tipo_Temp;
+        bool retorna;
 
         Clases clases;
         Clase clase_n;
@@ -34,6 +35,7 @@ namespace Proyecto2_compi
             InitializeComponent();
             clases = new Clases();
             globales = false;
+            retorna = false;
             dibujo = pictureBox1.CreateGraphics();
         }
 
@@ -354,6 +356,7 @@ namespace Proyecto2_compi
 
                             nombre = nodo.ChildNodes[0].Token.Text;
                             tipo = "void";
+                            
 
                             nuevo_f = new Funcion(tipo, nombre);
                             Actuar(nodo.ChildNodes[4]);
@@ -399,6 +402,11 @@ namespace Proyecto2_compi
                             {
 
                                 tipo = Actuar(nodo.ChildNodes[0]);
+
+                                if (tipo != "void")
+                                {
+                                    retorna = true;
+                                }
                                 nombre = nodo.ChildNodes[1].Token.Text;
 
                                 nuevo_f = new Funcion(tipo, nombre, false, privacidad);
@@ -477,6 +485,11 @@ namespace Proyecto2_compi
                                     tipo = Actuar(nodo.ChildNodes[0]);
                                     nombre = nodo.ChildNodes[2].Token.Text;
 
+                                    if (tipo != "void")
+                                    {
+                                        retorna = true;
+                                    }
+
                                     nuevo_f = new Funcion(tipo, nombre);
 
                                     nuevo_f.SetArreglor(true);
@@ -493,6 +506,11 @@ namespace Proyecto2_compi
                                     nombre = nodo.ChildNodes[1].Token.Text;
 
                                     nuevo_f = new Funcion(tipo, nombre);
+
+                                    if (tipo != "void")
+                                    {
+                                        retorna = true;
+                                    }
 
                                     parametro_funcion = true;
                                     Actuar(nodo.ChildNodes[3]);
@@ -646,6 +664,10 @@ namespace Proyecto2_compi
 
                                 nuevo_f.SetArreglor(true);
 
+                                if (tipo != "void")
+                                {
+                                    retorna = true;
+                                }
 
                                 nuevo_f.parametros = new Parametros();
 
@@ -805,6 +827,11 @@ namespace Proyecto2_compi
 
                 case "Retorno":
                     {
+                        if (retorna)
+                        {
+                            nuevo_f.SetRetorno(Actuar(nodo.ChildNodes[1]));
+                        }
+
                         break;
                     }
 
@@ -2371,6 +2398,11 @@ namespace Proyecto2_compi
                         break;
                     }
 
+                case "Para":
+                    {
+
+                        break;
+                    }
 
             }
 

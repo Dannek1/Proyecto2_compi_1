@@ -112,6 +112,11 @@ namespace Proyecto2_compi
             return retorno;
         }
 
+        public void SetRetorno(string r)
+        {
+            retorno = r;
+        }
+
         public bool TieneParametros()
         {
             bool respuesta = false;
