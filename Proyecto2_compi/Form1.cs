@@ -300,14 +300,33 @@ namespace Proyecto2_compi
 
                 case "Extension":
                     {
+                        string clase="";
                         if (nodo.ChildNodes.Count == 3)
                         {
                             resultado += Actuar(nodo.ChildNodes[0]) + ",";
-                            resultado += nodo.ChildNodes[2].Token.Value.ToString();
+                            clase= nodo.ChildNodes[2].Token.Value.ToString();
+                            if (clases.Existe_c(clase))
+                            {
+                                resultado += clase;
+                            }
+                            else
+                            {
+                                textBox2.Text += "(Error en " + nodo.ChildNodes[2].Token.Location.Line + "," + nodo.ChildNodes[2].Token.Location.Column + ") No existe la clase :\"" + clase + "\"";
+                            }
+                            
                         }
                         else
                         {
-                            resultado += nodo.ChildNodes[0].Token.Value.ToString();
+                           clase = nodo.ChildNodes[0].Token.Value.ToString();
+
+                            if (clases.Existe_c(clase))
+                            {
+                                resultado += clase;
+                            }
+                            else
+                            {
+                                textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") No existe la clase :\"" + clase + "\"";
+                            }
 
                         }
 
@@ -842,7 +861,14 @@ namespace Proyecto2_compi
                             string variable = nodo.ChildNodes[0].Token.Text;
                             string valor;
 
-                            if (clase_n.variables.Buscar_existe(variable))
+                            
+                           if (nuevo_f.variables.Buscar_existe(variable))
+                            {
+                                nuevo_f.variables.Buscar(variable);
+                                valor = Actuar(nodo.ChildNodes[2]);
+                                nuevo_f.variables.aux.SetValor(valor);
+                            }
+                            else if (clase_n.variables.Buscar_existe(variable))
                             {
                                 clase_n.variables.Buscar(variable);
 
@@ -852,16 +878,10 @@ namespace Proyecto2_compi
 
                                 clase_n.variables.aux.SetValor(valor);
 
-                            }
-                            else if (nuevo_f.variables.Buscar_existe(variable))
-                            {
-                                nuevo_f.variables.Buscar(variable);
-                                valor = Actuar(nodo.ChildNodes[2]);
-                                nuevo_f.variables.aux.SetValor(valor);
-                            }
+                            }                            
                             else
                             {
-                                textBox2.Text += "(Error en "+nodo.Token.Location.Line+","+ nodo.Token.Location.Column + ") No existe variable :\"" + variable + "\"";
+                                textBox2.Text += "(Error en "+ nodo.ChildNodes[0].Token.Location.Line+","+ nodo.ChildNodes[0].Token.Location.Column + ") No existe variable :\"" + variable + "\"";
                             }
 
                         }
@@ -885,7 +905,67 @@ namespace Proyecto2_compi
                             }
 
 
-                            if (clase_n.variables.Buscar_existe(variable))
+                            
+                            if (nuevo_f.variables.Buscar_existe(variable))
+                            {
+                                nuevo_f.variables.Buscar(variable);
+                                if (aumentar)
+                                {
+                                    if (nuevo_f.variables.aux.GetTipo().Equals("entero"))
+                                    {
+                                        int valor = Convert.ToInt32(nuevo_f.variables.aux.GetValor());
+                                        valor++;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (nuevo_f.variables.aux.GetTipo().Equals("doble"))
+                                    {
+                                        double valor = Convert.ToDouble(nuevo_f.variables.aux.GetValor());
+                                        valor++;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (nuevo_f.variables.aux.GetTipo().Equals("caracter"))
+                                    {
+                                        char valor = Convert.ToChar(nuevo_f.variables.aux.GetValor());
+                                        valor++;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else
+                                    {
+                                        textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                    }
+
+                                }
+                                else if (disminuir)
+                                {
+                                    if (nuevo_f.variables.aux.GetTipo().Equals("entero"))
+                                    {
+                                        int valor = Convert.ToInt32(nuevo_f.variables.aux.GetValor());
+                                        valor--;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (nuevo_f.variables.aux.GetTipo().Equals("doble"))
+                                    {
+                                        double valor = Convert.ToDouble(nuevo_f.variables.aux.GetValor());
+                                        valor--;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else if (nuevo_f.variables.aux.GetTipo().Equals("caracter"))
+                                    {
+                                        char valor = Convert.ToChar(nuevo_f.variables.aux.GetValor());
+                                        valor--;
+                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                    }
+                                    else
+                                    {
+                                        textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                    }
+                                }
+
+
+
+                                // nuevo_f.variables.aux.SetValor(valor);
+                            }
+                            else if (clase_n.variables.Buscar_existe(variable))
                             {
                                 clase_n.variables.Buscar(variable);
 
@@ -911,7 +991,7 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                        textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
                                     }
 
                                 }
@@ -937,73 +1017,14 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                        textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
                                     }
                                 }
 
-                               
+
 
                                 //clase_n.variables.aux.SetValor(valor);
 
-                            }
-                            else if (nuevo_f.variables.Buscar_existe(variable))
-                            {
-                                nuevo_f.variables.Buscar(variable);
-                                if (aumentar)
-                                {
-                                    if (nuevo_f.variables.aux.GetTipo().Equals("entero"))
-                                    {
-                                        int valor = Convert.ToInt32(nuevo_f.variables.aux.GetValor());
-                                        valor++;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
-                                    }
-                                    else if (nuevo_f.variables.aux.GetTipo().Equals("doble"))
-                                    {
-                                        double valor = Convert.ToDouble(nuevo_f.variables.aux.GetValor());
-                                        valor++;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
-                                    }
-                                    else if (nuevo_f.variables.aux.GetTipo().Equals("caracter"))
-                                    {
-                                        char valor = Convert.ToChar(nuevo_f.variables.aux.GetValor());
-                                        valor++;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
-                                    }
-                                    else
-                                    {
-                                        textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
-                                    }
-
-                                }
-                                else if (disminuir)
-                                {
-                                    if (nuevo_f.variables.aux.GetTipo().Equals("entero"))
-                                    {
-                                        int valor = Convert.ToInt32(nuevo_f.variables.aux.GetValor());
-                                        valor--;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
-                                    }
-                                    else if (nuevo_f.variables.aux.GetTipo().Equals("doble"))
-                                    {
-                                        double valor = Convert.ToDouble(nuevo_f.variables.aux.GetValor());
-                                        valor--;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
-                                    }
-                                    else if (nuevo_f.variables.aux.GetTipo().Equals("caracter"))
-                                    {
-                                        char valor = Convert.ToChar(nuevo_f.variables.aux.GetValor());
-                                        valor--;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
-                                    }
-                                    else
-                                    {
-                                        textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
-                                    }
-                                }
-
-
-
-                                // nuevo_f.variables.aux.SetValor(valor);
                             }
                             else
                             {
@@ -1867,7 +1888,7 @@ namespace Proyecto2_compi
                     }
 
                 case "Funciones":
-                    {
+                        {
 
                         string funcion;
 
@@ -1879,11 +1900,25 @@ namespace Proyecto2_compi
 
                             if (nodo.ChildNodes.Count == 4)
                             {
-                                //Operar sin Parametrso
+                                //Operar sin Parametros
                             }
                             else
                             {
                                 string param = Actuar(nodo.ChildNodes[2]);
+
+                                string[] variables = param.Split(',');
+
+                                for(int x = 0; x < variables.Length; x++)
+                                {
+                                    string n = clase_n.funciones.aux.parametros.GetNOmbreP(x + 1);
+
+                                    clase_n.funciones.aux.variables.Buscar(n);
+
+                                    clase_n.funciones.aux.variables.aux.SetValor(variables[x]);
+                                    
+                                }
+
+                                
                                 
                             }
                         }
@@ -1900,7 +1935,7 @@ namespace Proyecto2_compi
                         if (nodo.ChildNodes.Count == 3)
                         {
 
-                            if (nodo.ChildNodes[0].Token.Text.Equals("("))
+                            if (nodo.ChildNodes[0].Term.Name!= "Operacion")
                             {
                                 resultado = Actuar(nodo.ChildNodes[1]);
                             }
@@ -2088,13 +2123,14 @@ namespace Proyecto2_compi
                         tipo= Actuar(nodo.ChildNodes[0]);
                         nombre = nodo.ChildNodes[1].Token.Value.ToString();
 
-
+                        Variable nuevo = new Variable(tipo, nombre);
                         nuevo_P = new Parametro(tipo, nombre);
 
                         if (parametro_funcion)
                         {
                             nuevo_f.parametros.Insertar(nuevo_P);
                             nuevo_f.AumentarParametros();
+                            nuevo_f.variables.Insertar(nuevo);
                         }
 
                         break;
@@ -2172,7 +2208,7 @@ namespace Proyecto2_compi
                             hacer = false;
                         }
 
-                        if (nodo.ChildNodes.Count == 5)
+                        if (nodo.ChildNodes.Count == 6)
                         {
                             if (hacer)
                             {
@@ -2295,7 +2331,7 @@ namespace Proyecto2_compi
                         }
                         else
                         {
-                            resultado = Actuar(nodo.ChildNodes[1]);
+                            resultado = Actuar(nodo.ChildNodes[0]);
 
                         }
 
@@ -2306,14 +2342,14 @@ namespace Proyecto2_compi
                     {
                         if (nodo.ChildNodes.Count == 3)
                         {
-                            if (nodo.ChildNodes[0].Token.Text.Equals("("))
+                            if (nodo.ChildNodes[0].Term.Name!= "Relacional")
                             {
                                 resultado = Actuar(nodo.ChildNodes[1]);
                             }
                             else
                             {
-                                double operador1 = Aritmeticas(nodo.ChildNodes[0]);
-                                double operador2 = Aritmeticas(nodo.ChildNodes[2]);
+                                double operador1 = Convert.ToDouble(Actuar(nodo.ChildNodes[0]));
+                                double operador2 = Convert.ToDouble(Actuar(nodo.ChildNodes[2]));
 
                                 if (nodo.ChildNodes[1].Token.Terminal.Name.ToString() == "igual")
                                 {
@@ -2392,7 +2428,7 @@ namespace Proyecto2_compi
                         }
                         else
                         {
-                            resultado = Actuar(nodo.ChildNodes[1]);
+                            resultado = Actuar(nodo.ChildNodes[0]);
 
                         }
                         break;
@@ -2473,16 +2509,18 @@ namespace Proyecto2_compi
 
                             if (clase_n.variables.Buscar_existe(nombre))
                             {
-                                textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") Ya existe variable :\"" + nombre + "\"";
+                                textBox2.Text += "(Error en " + nodo.ChildNodes[3].Token.Location.Line + "," + nodo.ChildNodes[3].Token.Location.Column + ") Ya existe variable :\"" + nombre + "\"";
                             }
                             else if (nuevo_f.variables.Buscar_existe(nombre))
                             {
-                                textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") Ya existe variable :\"" + nombre + "\"";
+                                textBox2.Text += "(Error en " + nodo.ChildNodes[3].Token.Location.Line + "," + nodo.ChildNodes[3].Token.Location.Column + ") Ya existe variable :\"" + nombre + "\"";
                             }
                             else
                             {
-                                string tipo = Actuar(nodo.ChildNodes[0]);
+                                string tipo = Actuar(nodo.ChildNodes[2]);
                                 Variable nuevo = new Variable(tipo, nombre);
+
+                                nuevo_f.variables.Insertar(nuevo);
 
                                 double control = Aritmeticas(nodo.ChildNodes[5]);
                                 nuevo.SetValor(Convert.ToString(control));
@@ -2504,8 +2542,9 @@ namespace Proyecto2_compi
                                         control--;
                                     }
 
-                                    logica_inicial = Actuar(nodo.ChildNodes[5]);
                                     nuevo.SetValor(Convert.ToString(control));
+                                    logica_inicial = Actuar(nodo.ChildNodes[7]);
+                                    
                                 }
 
                             }

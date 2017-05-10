@@ -22,5 +22,15 @@ namespace Proyecto2_compi
             siguiente = null;
             anterior = null;
         }
+
+        public string GetNombre()
+        {
+            return nombre;
+        }
+
+        public string GetTipo()
+        {
+            return tipo;
+        }
     }
 }

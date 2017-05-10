@@ -48,6 +48,22 @@ namespace Proyecto2_compi
             }
         }
 
-        
+        public string GetNOmbreP(int vueltas)
+        {
+            string resultado = "";
+            aux = cabeza;
+
+            for(int x = 0; x < vueltas; x++)
+            {
+                if (x != 0)
+                {
+                    aux = aux.siguiente;
+                }
+            }
+
+            resultado = aux.GetNombre();
+
+            return resultado;
+        }
     }
 }

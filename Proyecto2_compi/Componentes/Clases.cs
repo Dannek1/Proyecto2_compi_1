@@ -47,6 +47,44 @@ namespace Proyecto2_compi
             }
         }
 
+        public bool Existe_c(string nombre)
+        {
+            bool respuesta = false;
 
+            if (cabeza == null)
+            {
+                respuesta = false;
+            }
+            else
+            {
+                bool seguir = true;
+
+                aux = cabeza;
+
+                while (seguir)
+                {
+                    if (aux.GetNombre().Equals(nombre))
+                    {
+                        seguir = false;
+                        respuesta = true;
+
+                    }
+                    else
+                    {
+                        if (aux.siguiente != null)
+                        {
+                            aux = aux.siguiente;
+                        }
+                        else
+                        {
+                            seguir = false;
+                            respuesta = true;
+                        }
+                    }
+                }
+            }
+
+            return respuesta;
+        }
     }
 }

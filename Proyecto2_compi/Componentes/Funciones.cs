@@ -10,7 +10,7 @@ namespace Proyecto2_compi
     {
         Funcion cabeza;
         Funcion ultimo;
-        Funcion aux;
+        public Funcion aux;
 
         public Funciones()
         {
@@ -119,5 +119,7 @@ namespace Proyecto2_compi
 
             return aux;
         }
+
+        
     }
 }
