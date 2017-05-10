@@ -2676,5 +2676,61 @@ namespace Proyecto2_compi
         {
 
         }
+
+        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Title = "Select a Cursor File";
+
+            // Show the Dialog.
+            // If the user clicked OK in the dialog and
+            // a .CUR file was selected, open it.
+           
+
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                System.IO.StreamReader sr = new
+                   System.IO.StreamReader(openFileDialog1.FileName);
+                string archivo=sr.ReadToEnd();
+                sr.Close();
+                textBox1.Text = archivo;
+            }
+
+            
+        }
+
+        private void guardarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            string codigo = textBox1.Text;
+            SaveFileDialog saveFileDialog1;
+            saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Title = "Guardar Archivo de Texto";
+            
+
+            saveFileDialog1.DefaultExt = "txt";
+            saveFileDialog1.AddExtension = true;
+            saveFileDialog1.RestoreDirectory = true;
+
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string ruta = saveFileDialog1.FileName;
+
+                FileStream fs = new FileStream(ruta, FileMode.Open, FileAccess.Write);
+
+                StreamWriter fichero = new StreamWriter(fs);
+                fichero.Write(codigo);
+                fichero.Close();
+                fs.Close();
+                MessageBox.Show("Se guardo el archivo: " + saveFileDialog1.FileName);
+            }
+            else
+            {
+                MessageBox.Show("Has cancelado.");
+            }
+            saveFileDialog1.Dispose();
+            saveFileDialog1 = null;
+        }
     }
 }
