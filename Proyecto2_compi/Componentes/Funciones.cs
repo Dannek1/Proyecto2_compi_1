@@ -120,6 +120,10 @@ namespace Proyecto2_compi
             return aux;
         }
 
+        public void SeekCabeza()
+        {
+            aux = cabeza;
+        }
         
     }
 }

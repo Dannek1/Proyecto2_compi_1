@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Irony.Parsing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ namespace Proyecto2_compi
         private string nombre;
         private bool publico;
         private bool final;
+
+        public ParseTreeNode nodo;
 
         public Funciones funciones;
         public Variables variables;

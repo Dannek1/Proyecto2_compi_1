@@ -128,7 +128,7 @@ namespace Proyecto2_compi
             }
             else
             {
-                string[] valores_D = valoresN.Split(';');
+                string[] valores_D = valor.Split(';');
 
                 if (valores_D.Length > 1)
                 {
@@ -196,14 +196,18 @@ namespace Proyecto2_compi
 
             if (tope > 1)
             {
-                Valores nuevo = new Valores(datos[0], dimension);
+                for (int x = 0; x < tope; x++)
+                {
+                    Valores nuevo = new Valores(datos[x], x);
+
+                    valores[dimension].insertar(nuevo);
+                }
+                
             }
             else
             {
-                for(int x = 0; x < tope; x++)
-                {
-                    Valores nuevo = new Valores(datos[x], dimension);
-                }
+                Valores nuevo = new Valores(datos[0], dimension);
+                valores[dimension].insertar(nuevo);
             }
         }
 

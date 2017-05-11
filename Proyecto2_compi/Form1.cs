@@ -21,6 +21,8 @@ namespace Proyecto2_compi
         bool parametro_funcion;
         int dimension;
         string tipo_Temp;
+        string fun_actual;
+        string clase_actual;
         bool retorna;
 
         Clases clases;
@@ -104,12 +106,19 @@ namespace Proyecto2_compi
 
                 MessageBox.Show("Arbol de Analisis Sintactico Constuido !!!");
 
-                textBox2.Text = respuesta;
+                textBox2.Text += respuesta;
+
+                button2.Visible = true;
 
             }
             else
             {
 
+                MessageBox.Show("Arbol de Analisis Sintactico Constuido !!!");
+
+                textBox2.Text += respuesta;
+
+                button2.Visible = true;
             }
         }
 
@@ -174,6 +183,7 @@ namespace Proyecto2_compi
                         if (nodo.ChildNodes.Count == 2)
                         {
                             Actuar(nodo.ChildNodes[0]);
+                            clase_n.nodo = nodo.ChildNodes[1];
                             Actuar(nodo.ChildNodes[1]);
                         }
 
@@ -208,8 +218,10 @@ namespace Proyecto2_compi
 
 
                             nombre = nodo.ChildNodes[2].Token.Text;
+                            clase_actual = nombre;
 
                             clase_n = new Clase(nombre, privacidad, final);
+                            
                         }
                         else if (nodo.ChildNodes.Count == 4)
                         {
@@ -230,19 +242,25 @@ namespace Proyecto2_compi
                                 final = true;
 
                                 nombre = nodo.ChildNodes[2].Token.Text;
+                                clase_actual = nombre;
                                 clase_n = new Clase(nombre, privacidad, final);
 
                             }
                             else
                             {
                                 nombre = nodo.ChildNodes[2].Token.Text;
+                                clase_actual = nombre;
 
                                 extension = Actuar(nodo.ChildNodes[3]);
 
                                 clase_n = new Clase(nombre, privacidad, extension);
 
+                                string[] extender = extension.Split(',');
 
-
+                                for (int x = 0; x < extender.Length; x++)
+                                {
+                                    Heredar(clase_n, clases.Existe(extender[x]));
+                                }
                             }
 
 
@@ -262,13 +280,24 @@ namespace Proyecto2_compi
 
                             final = true;
                             nombre = nodo.ChildNodes[3].Token.Text;
+                            clase_actual = nombre;
 
                             extension = Actuar(nodo.ChildNodes[4]);
+
+
                             clase_n = new Clase(nombre, privacidad, extension, final);
+
+                            string[] extender = extension.Split(',');
+
+                            for(int x = 0; x < extender.Length; x++)
+                            {
+                                Heredar(clase_n, clases.Existe(extender[x]));
+                            }
 
                         }
 
                         clases.Insertar(clase_n);
+                        
 
 
                         break;
@@ -308,7 +337,8 @@ namespace Proyecto2_compi
                             if (clases.Existe_c(clase))
                             {
                                 resultado += clase;
-                            }
+                                
+;                            }
                             else
                             {
                                 textBox2.Text += "(Error en " + nodo.ChildNodes[2].Token.Location.Line + "," + nodo.ChildNodes[2].Token.Location.Column + ") No existe la clase :\"" + clase + "\"";
@@ -322,6 +352,7 @@ namespace Proyecto2_compi
                             if (clases.Existe_c(clase))
                             {
                                 resultado += clase;
+                                
                             }
                             else
                             {
@@ -378,7 +409,7 @@ namespace Proyecto2_compi
                             
 
                             nuevo_f = new Funcion(tipo, nombre);
-                            Actuar(nodo.ChildNodes[4]);
+                            nuevo_f.nodo=nodo.ChildNodes[4];
 
                             clase_n.funciones.Insertar(nuevo_f);
                         }
@@ -392,7 +423,7 @@ namespace Proyecto2_compi
                                 tipo = "void";
 
                                 nuevo_f = new Funcion(tipo, nombre, final);
-                                Actuar(nodo.ChildNodes[5]);
+                                nuevo_f.nodo = nodo.ChildNodes[5];
 
                                 clase_n.funciones.Insertar(nuevo_f);
                             }
@@ -413,7 +444,7 @@ namespace Proyecto2_compi
                                 tipo = "void";
 
                                 nuevo_f = new Funcion(tipo, nombre, false, privacidad);
-                                Actuar(nodo.ChildNodes[5]);
+                                nuevo_f.nodo = nodo.ChildNodes[5];
                                 clase_n.funciones.Insertar(nuevo_f);
 
                             }
@@ -429,7 +460,7 @@ namespace Proyecto2_compi
                                 nombre = nodo.ChildNodes[1].Token.Text;
 
                                 nuevo_f = new Funcion(tipo, nombre, false, privacidad);
-                                Actuar(nodo.ChildNodes[5]);
+                                nuevo_f.nodo = nodo.ChildNodes[5];
                                 clase_n.funciones.Insertar(nuevo_f);
 
                             }
@@ -448,7 +479,7 @@ namespace Proyecto2_compi
                                 parametro_funcion = false;
 
 
-                                Actuar(nodo.ChildNodes[5]);
+                                nuevo_f.nodo = nodo.ChildNodes[5];
                                 clase_n.funciones.Insertar(nuevo_f);
 
                             }
@@ -469,8 +500,8 @@ namespace Proyecto2_compi
 
                                     nuevo_f = new Funcion(tipo, nombre, final);
 
-
-                                    Actuar(nodo.ChildNodes[6]);
+                                    nuevo_f.nodo = nodo.ChildNodes[6];
+                                    
 
                                     clase_n.funciones.Insertar(nuevo_f);
                                 }
@@ -489,8 +520,8 @@ namespace Proyecto2_compi
                                     Actuar(nodo.ChildNodes[3]);
                                     parametro_funcion = false;
 
-
-                                    Actuar(nodo.ChildNodes[6]);
+                                    nuevo_f.nodo = nodo.ChildNodes[6];
+                                    
 
                                     clase_n.funciones.Insertar(nuevo_f);
                                 }
@@ -513,7 +544,8 @@ namespace Proyecto2_compi
 
                                     nuevo_f.SetArreglor(true);
 
-                                    Actuar(nodo.ChildNodes[6]);
+                                    nuevo_f.nodo = nodo.ChildNodes[6];
+                                    
 
                                     clase_n.funciones.Insertar(nuevo_f);
 
@@ -535,7 +567,8 @@ namespace Proyecto2_compi
                                     Actuar(nodo.ChildNodes[3]);
                                     parametro_funcion = false;
 
-                                    Actuar(nodo.ChildNodes[6]);
+                                    nuevo_f.nodo = nodo.ChildNodes[6];
+                                    
 
                                     clase_n.funciones.Insertar(nuevo_f);
                                 }
@@ -563,7 +596,8 @@ namespace Proyecto2_compi
 
                                     nuevo_f = new Funcion(tipo, nombre, false, privacidad);
 
-                                    Actuar(nodo.ChildNodes[6]);
+                                    nuevo_f.nodo = nodo.ChildNodes[6];
+                                    
 
                                     clase_n.funciones.Insertar(nuevo_f);
                                 }
@@ -580,7 +614,9 @@ namespace Proyecto2_compi
                                     Actuar(nodo.ChildNodes[3]);
                                     parametro_funcion = false;
 
-                                    Actuar(nodo.ChildNodes[6]);
+
+                                    nuevo_f.nodo = nodo.ChildNodes[6];
+                                    
 
                                     clase_n.funciones.Insertar(nuevo_f);
                                 }
@@ -605,7 +641,7 @@ namespace Proyecto2_compi
 
                                     nuevo_f.SetArreglor(true);
 
-                                    Actuar(nodo.ChildNodes[7]);
+                                    nuevo_f.nodo = nodo.ChildNodes[7];
 
                                     clase_n.funciones.Insertar(nuevo_f);
 
@@ -622,8 +658,8 @@ namespace Proyecto2_compi
                                     Actuar(nodo.ChildNodes[4]);
                                     parametro_funcion = false;
 
-                                    Actuar(nodo.ChildNodes[7]);
-
+                                    nuevo_f.nodo = nodo.ChildNodes[7];
+                                    
                                     clase_n.funciones.Insertar(nuevo_f);
 
                                 }
@@ -650,7 +686,7 @@ namespace Proyecto2_compi
 
                                     nuevo_f.SetArreglor(true);
 
-                                    Actuar(nodo.ChildNodes[7]);
+                                    nuevo_f.nodo = nodo.ChildNodes[7];
 
                                     clase_n.funciones.Insertar(nuevo_f);
 
@@ -667,7 +703,7 @@ namespace Proyecto2_compi
                                     Actuar(nodo.ChildNodes[4]);
                                     parametro_funcion = false;
 
-                                    Actuar(nodo.ChildNodes[7]);
+                                    nuevo_f.nodo = nodo.ChildNodes[7];
 
                                     clase_n.funciones.Insertar(nuevo_f);
 
@@ -694,7 +730,7 @@ namespace Proyecto2_compi
                                 Actuar(nodo.ChildNodes[4]);
                                 parametro_funcion = false;
 
-                                Actuar(nodo.ChildNodes[7]);
+                                nuevo_f.nodo = nodo.ChildNodes[7];
 
                                 clase_n.funciones.Insertar(nuevo_f);
 
@@ -719,13 +755,11 @@ namespace Proyecto2_compi
                                 Actuar(nodo.ChildNodes[5]);
                                 parametro_funcion = false;
 
-                                Actuar(nodo.ChildNodes[8]);
+                                nuevo_f.nodo = nodo.ChildNodes[8];
 
                                 clase_n.funciones.Insertar(nuevo_f);
 
-
-
-
+                                
                             }
                             else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Visibilidad"))
                             {
@@ -752,7 +786,7 @@ namespace Proyecto2_compi
                                     Actuar(nodo.ChildNodes[5]);
                                     parametro_funcion = false;
 
-                                    Actuar(nodo.ChildNodes[8]);
+                                    nuevo_f.nodo = nodo.ChildNodes[8];
 
                                     clase_n.funciones.Insertar(nuevo_f);
 
@@ -769,7 +803,7 @@ namespace Proyecto2_compi
 
                                     nuevo_f.SetArreglor(true);
 
-                                    Actuar(nodo.ChildNodes[8]);
+                                    nuevo_f.nodo = nodo.ChildNodes[8];
 
                                     clase_n.funciones.Insertar(nuevo_f);
 
@@ -809,7 +843,7 @@ namespace Proyecto2_compi
                             Actuar(nodo.ChildNodes[6]);
                             parametro_funcion = false;
 
-                            Actuar(nodo.ChildNodes[9]);
+                            nuevo_f.nodo = nodo.ChildNodes[9];
 
                             clase_n.funciones.Insertar(nuevo_f);
 
@@ -848,7 +882,8 @@ namespace Proyecto2_compi
                     {
                         if (retorna)
                         {
-                            nuevo_f.SetRetorno(Actuar(nodo.ChildNodes[1]));
+
+                            clase_n.funciones.aux.SetRetorno(Actuar(nodo.ChildNodes[1]));
                         }
 
                         break;
@@ -856,17 +891,19 @@ namespace Proyecto2_compi
 
                 case "Asignacion":
                     {
+                        clase_n.funciones.Existe(fun_actual);
+                        
                         if (nodo.ChildNodes.Count == 4)
                         {
                             string variable = nodo.ChildNodes[0].Token.Text;
                             string valor;
 
                             
-                           if (nuevo_f.variables.Buscar_existe(variable))
+                           if (clase_n.funciones.aux.variables.Buscar_existe(variable))
                             {
-                                nuevo_f.variables.Buscar(variable);
+                                clase_n.funciones.aux.variables.Buscar(variable);
                                 valor = Actuar(nodo.ChildNodes[2]);
-                                nuevo_f.variables.aux.SetValor(valor);
+                                clase_n.funciones.aux.variables.aux.SetValor(valor);
                             }
                             else if (clase_n.variables.Buscar_existe(variable))
                             {
@@ -906,28 +943,28 @@ namespace Proyecto2_compi
 
 
                             
-                            if (nuevo_f.variables.Buscar_existe(variable))
+                            if (clase_n.funciones.aux.variables.Buscar_existe(variable))
                             {
-                                nuevo_f.variables.Buscar(variable);
+                                clase_n.funciones.aux.variables.Buscar(variable);
                                 if (aumentar)
                                 {
-                                    if (nuevo_f.variables.aux.GetTipo().Equals("entero"))
+                                    if (clase_n.funciones.aux.variables.aux.GetTipo().Equals("entero"))
                                     {
-                                        int valor = Convert.ToInt32(nuevo_f.variables.aux.GetValor());
+                                        int valor = Convert.ToInt32(clase_n.funciones.aux.variables.aux.GetValor());
                                         valor++;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                        clase_n.funciones.aux.variables.aux.SetValor(Convert.ToString(valor));
                                     }
-                                    else if (nuevo_f.variables.aux.GetTipo().Equals("doble"))
+                                    else if (clase_n.funciones.aux.variables.aux.GetTipo().Equals("doble"))
                                     {
-                                        double valor = Convert.ToDouble(nuevo_f.variables.aux.GetValor());
+                                        double valor = Convert.ToDouble(clase_n.funciones.aux.variables.aux.GetValor());
                                         valor++;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                        clase_n.funciones.aux.variables.aux.SetValor(Convert.ToString(valor));
                                     }
-                                    else if (nuevo_f.variables.aux.GetTipo().Equals("caracter"))
+                                    else if (clase_n.funciones.aux.variables.aux.GetTipo().Equals("caracter"))
                                     {
-                                        char valor = Convert.ToChar(nuevo_f.variables.aux.GetValor());
+                                        char valor = Convert.ToChar(clase_n.funciones.aux.variables.aux.GetValor());
                                         valor++;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                        clase_n.funciones.aux.variables.aux.SetValor(Convert.ToString(valor));
                                     }
                                     else
                                     {
@@ -937,23 +974,23 @@ namespace Proyecto2_compi
                                 }
                                 else if (disminuir)
                                 {
-                                    if (nuevo_f.variables.aux.GetTipo().Equals("entero"))
+                                    if (clase_n.funciones.aux.variables.aux.GetTipo().Equals("entero"))
                                     {
-                                        int valor = Convert.ToInt32(nuevo_f.variables.aux.GetValor());
+                                        int valor = Convert.ToInt32(clase_n.funciones.aux.variables.aux.GetValor());
                                         valor--;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                        clase_n.funciones.aux.variables.aux.SetValor(Convert.ToString(valor));
                                     }
-                                    else if (nuevo_f.variables.aux.GetTipo().Equals("doble"))
+                                    else if (clase_n.funciones.aux.variables.aux.GetTipo().Equals("doble"))
                                     {
-                                        double valor = Convert.ToDouble(nuevo_f.variables.aux.GetValor());
+                                        double valor = Convert.ToDouble(clase_n.funciones.aux.variables.aux.GetValor());
                                         valor--;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                        clase_n.funciones.aux.variables.aux.SetValor(Convert.ToString(valor));
                                     }
-                                    else if (nuevo_f.variables.aux.GetTipo().Equals("caracter"))
+                                    else if (clase_n.funciones.aux.variables.aux.GetTipo().Equals("caracter"))
                                     {
-                                        char valor = Convert.ToChar(nuevo_f.variables.aux.GetValor());
+                                        char valor = Convert.ToChar(clase_n.funciones.aux.variables.aux.GetValor());
                                         valor--;
-                                        nuevo_f.variables.aux.SetValor(Convert.ToString(valor));
+                                        clase_n.funciones.aux.variables.aux.SetValor(Convert.ToString(valor));
                                     }
                                     else
                                     {
@@ -1061,7 +1098,8 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.Existe(fun_actual);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
                             }
@@ -1075,7 +1113,8 @@ namespace Proyecto2_compi
                                 }
                                 else
                                 {
-                                    nuevo_f.variables.Insertar(nuevo);
+                                    clase_n.funciones.Existe(fun_actual);
+                                    clase_n.funciones.aux.variables.Insertar(nuevo);
                                 }
                             }
 
@@ -1101,7 +1140,8 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.Existe(fun_actual);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
                             }
@@ -1115,7 +1155,8 @@ namespace Proyecto2_compi
                                 }
                                 else
                                 {
-                                    nuevo_f.variables.Insertar(nuevo);
+                                    clase_n.funciones.Existe(fun_actual);
+                                    clase_n.funciones.aux.variables.Insertar(nuevo);
                                 }
                             }
 
@@ -1143,7 +1184,8 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.Existe(fun_actual);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
                                 }
@@ -1157,7 +1199,8 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.Existe(fun_actual);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
                             }
@@ -1185,7 +1228,8 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.Existe(fun_actual);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
                                 }
@@ -1199,7 +1243,8 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.Existe(fun_actual);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
                             }
@@ -1227,7 +1272,8 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.Existe(fun_actual);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
                                 }
@@ -1241,7 +1287,8 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.Existe(fun_actual);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
                             }
@@ -1267,7 +1314,8 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.Existe(fun_actual);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
                                 }
@@ -1281,7 +1329,8 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.Existe(fun_actual);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
 
@@ -1295,6 +1344,7 @@ namespace Proyecto2_compi
                             string[] nombres = nombreV.Split(',');
 
                             string dimeniones = Actuar(nodo.ChildNodes[4]);
+                            clase_n.funciones.Existe(fun_actual);
 
                             if (clase_n.variables.Buscar_existe(nodo.ChildNodes[6].Token.Text))
                             {
@@ -1314,7 +1364,8 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.Existe(fun_actual);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
                                 }
@@ -1328,17 +1379,18 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.Existe(fun_actual);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
 
 
 
                             }
-                            else if (nuevo_f.variables.Buscar_existe(nodo.ChildNodes[6].Token.Text))
+                            else if (clase_n.funciones.aux.variables.Buscar_existe(nodo.ChildNodes[6].Token.Text))
                             {
-                                nuevo_f.variables.Buscar(nodo.ChildNodes[6].Token.Text);
-                                valorV = nuevo_f.variables.aux.GetValor();
+                                clase_n.funciones.aux.variables.Buscar(nodo.ChildNodes[6].Token.Text);
+                                valorV = clase_n.funciones.aux.variables.aux.GetValor();
 
                                 if (nombres.Length > 1)
                                 {
@@ -1352,7 +1404,7 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
                                 }
@@ -1366,7 +1418,7 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
 
@@ -1385,6 +1437,7 @@ namespace Proyecto2_compi
                             string[] nombres = nombreV.Split(',');
 
                             string dimeniones = Actuar(nodo.ChildNodes[5]);
+                            clase_n.funciones.Existe(fun_actual);
 
                             if (clase_n.variables.Buscar_existe(nodo.ChildNodes[7].Token.Text))
                             {
@@ -1425,10 +1478,10 @@ namespace Proyecto2_compi
 
 
                             }
-                            else if (nuevo_f.variables.Buscar_existe(nodo.ChildNodes[7].Token.Text))
+                            else if (clase_n.funciones.aux.variables.Buscar_existe(nodo.ChildNodes[7].Token.Text))
                             {
-                                nuevo_f.variables.Buscar(nodo.ChildNodes[7].Token.Text);
-                                valorV = nuevo_f.variables.aux.GetValor();
+                                clase_n.funciones.aux.variables.Buscar(nodo.ChildNodes[7].Token.Text);
+                                valorV = clase_n.funciones.aux.variables.aux.GetValor();
 
                                 if (nombres.Length > 1)
                                 {
@@ -1442,7 +1495,7 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
                                 }
@@ -1456,7 +1509,7 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
 
@@ -1495,7 +1548,8 @@ namespace Proyecto2_compi
                                             }
                                             else
                                             {
-                                                nuevo_f.variables.Insertar(nuevo);
+                                                clase_n.funciones.Existe(fun_actual);
+                                                clase_n.funciones.aux.variables.Insertar(nuevo);
                                             }
                                         }
                                     }
@@ -1509,7 +1563,8 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.Existe(fun_actual);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
 
@@ -1539,7 +1594,8 @@ namespace Proyecto2_compi
                                             }
                                             else
                                             {
-                                                nuevo_f.variables.Insertar(nuevo);
+                                                clase_n.funciones.Existe(fun_actual);
+                                                clase_n.funciones.aux.variables.Insertar(nuevo);
                                             }
                                         }
                                     }
@@ -1553,7 +1609,8 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.Existe(fun_actual);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
 
@@ -1574,7 +1631,10 @@ namespace Proyecto2_compi
                                 if (clase_n.funciones.ExisteF(funcion))
                                 {
                                     Funcion aux = clase_n.funciones.Existe(funcion);
-
+                                    string temp=fun_actual;
+                                    fun_actual = aux.GetNombre();
+                                    Actuar(aux.nodo);
+                                    fun_actual = temp;
                                     if (aux.GetTipo().Equals(tipoV))
                                     {
                                         valorV = aux.GetRetorno();
@@ -1592,7 +1652,8 @@ namespace Proyecto2_compi
                                                 }
                                                 else
                                                 {
-                                                    nuevo_f.variables.Insertar(nuevo);
+                                                    clase_n.funciones.Existe(fun_actual);
+                                                    clase_n.funciones.aux.variables.Insertar(nuevo);
                                                 }
                                             }
                                         }
@@ -1606,7 +1667,8 @@ namespace Proyecto2_compi
                                             }
                                             else
                                             {
-                                                nuevo_f.variables.Insertar(nuevo);
+                                                clase_n.funciones.Existe(fun_actual);
+                                                clase_n.funciones.aux.variables.Insertar(nuevo);
                                             }
                                         }
 
@@ -1649,7 +1711,8 @@ namespace Proyecto2_compi
                                         }
                                         else
                                         {
-                                            nuevo_f.variables.Insertar(nuevo);
+                                            clase_n.funciones.Existe(fun_actual);
+                                            clase_n.funciones.aux.variables.Insertar(nuevo);
                                         }
                                     }
                                 }
@@ -1663,7 +1726,8 @@ namespace Proyecto2_compi
                                     }
                                     else
                                     {
-                                        nuevo_f.variables.Insertar(nuevo);
+                                        clase_n.funciones.Existe(fun_actual);
+                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                     }
                                 }
                             }
@@ -1754,7 +1818,7 @@ namespace Proyecto2_compi
 
                             }
                         }
-                        else if (nodo.ChildNodes.Count == 12    )
+                        else if (nodo.ChildNodes.Count == 12)
                         {
                             dimension = 0;
                             tipoV = Actuar(nodo.ChildNodes[2]);
@@ -1794,7 +1858,8 @@ namespace Proyecto2_compi
                                                     }
                                                     else
                                                     {
-                                                        nuevo_f.variables.Insertar(nuevo);
+                                                        clase_n.funciones.Existe(fun_actual);
+                                                        clase_n.funciones.aux.variables.Insertar(nuevo);
                                                     }
                                                 }
                                             }
@@ -1808,7 +1873,8 @@ namespace Proyecto2_compi
                                                 }
                                                 else
                                                 {
-                                                    nuevo_f.variables.Insertar(nuevo);
+                                                    clase_n.funciones.Existe(fun_actual);
+                                                    clase_n.funciones.aux.variables.Insertar(nuevo);
                                                 }
                                             }
                                         }
@@ -1893,22 +1959,26 @@ namespace Proyecto2_compi
                         string funcion;
 
                         funcion= nodo.ChildNodes[0].Token.Value.ToString();
-
+                        string temp = "Principal";
+                        fun_actual=funcion;
                         if (clase_n.funciones.ExisteF(funcion))
                         {
                             clase_n.funciones.Existe(funcion);
 
                             if (nodo.ChildNodes.Count == 4)
                             {
-                                //Operar sin Parametros
+                                Actuar(clase_n.funciones.aux.nodo);
                             }
                             else
                             {
+                                fun_actual = temp;
                                 string param = Actuar(nodo.ChildNodes[2]);
 
                                 string[] variables = param.Split(',');
 
-                                for(int x = 0; x < variables.Length; x++)
+                                fun_actual = funcion;
+                                clase_n.funciones.Existe(funcion);
+                                for (int x = 0; x < variables.Length; x++)
                                 {
                                     string n = clase_n.funciones.aux.parametros.GetNOmbreP(x + 1);
 
@@ -1918,8 +1988,8 @@ namespace Proyecto2_compi
                                     
                                 }
 
-                                
-                                
+                                Actuar(clase_n.funciones.aux.nodo);
+
                             }
                         }
                         else
@@ -1948,15 +2018,18 @@ namespace Proyecto2_compi
                         }
                         else if (nodo.ChildNodes.Count == 4)
                         {
+
+                            clase_n.funciones.Existe(fun_actual);
+
                             if (clase_n.variables.Buscar_existe(nodo.ChildNodes[0].Token.Text))
                             {
                                 clase_n.variables.Buscar(nodo.ChildNodes[0].Token.Text);
 
                                 if (clase_n.variables.aux.IsArreglo())
                                 {
-                                    Double lugar= Aritmeticas(nodo.ChildNodes[3]);
+                                    Double lugar= Aritmeticas(nodo.ChildNodes[2]);
 
-                                    resultado = clase_n.variables.aux.GetValor_Arr(0, Convert.ToInt32(Aritmeticas(nodo)));
+                                    resultado = clase_n.variables.aux.GetValor_Arr(0, Convert.ToInt32(lugar));
                                 }
                                 else
                                 {
@@ -1964,14 +2037,14 @@ namespace Proyecto2_compi
                                 }
 
                             }
-                            else if (nuevo_f.variables.Buscar_existe(nodo.ChildNodes[0].Token.Text))
+                            else if (clase_n.funciones.aux.variables.Buscar_existe(nodo.ChildNodes[0].Token.Text))
                             {
-                                nuevo_f.variables.Buscar(nodo.ChildNodes[0].Token.Text);
-                                if (nuevo_f.variables.aux.IsArreglo())
+                                clase_n.funciones.aux.variables.Buscar(nodo.ChildNodes[0].Token.Text);
+                                if (clase_n.funciones.aux.variables.aux.IsArreglo())
                                 {
-                                    Double lugar = Aritmeticas(nodo.ChildNodes[3]);
+                                    Double lugar = Aritmeticas(nodo.ChildNodes[2]);
 
-                                    resultado = nuevo_f.variables.aux.GetValor_Arr(0, Convert.ToInt32(Aritmeticas(nodo)));
+                                    resultado = clase_n.funciones.aux.variables.aux.GetValor_Arr(0, Convert.ToInt32(lugar));
                                 }
                                 else
                                 {
@@ -1996,10 +2069,14 @@ namespace Proyecto2_compi
                                     resultado = clase_n.variables.aux.GetValor();
 
                                 }
-                                else if (nuevo_f.variables.Buscar_existe(nodo.ChildNodes[0].Token.Text))
+                                else if (clase_n.funciones.aux.variables.Buscar_existe(nodo.ChildNodes[0].Token.Text))
                                 {
-                                    nuevo_f.variables.Buscar(nodo.ChildNodes[0].Token.Text);
-                                    resultado = nuevo_f.variables.aux.GetValor();
+
+
+                                    clase_n.funciones.aux.variables.Buscar(nodo.ChildNodes[0].Token.Text);
+
+
+                                    resultado = clase_n.funciones.aux.variables.aux.GetValor();
                                 }
                                 else
                                 {
@@ -2243,7 +2320,7 @@ namespace Proyecto2_compi
                     {
                         if (nodo.ChildNodes.Count == 3)
                         {
-                            if (nodo.ChildNodes[0].Token.Text.Equals("("))
+                            if(nodo.ChildNodes[0].Term.Name != "Logica")
                             {
                                 resultado = Actuar(nodo.ChildNodes[1]);
                             }
@@ -2562,6 +2639,8 @@ namespace Proyecto2_compi
                         while (condicion.Equals("true"))
                         {
                             Actuar(nodo.ChildNodes[4]);
+
+                            condicion = Actuar(nodo.ChildNodes[1]);
                         }
                         break;
                     }
@@ -2579,7 +2658,6 @@ namespace Proyecto2_compi
                         break;
 
 
-                        break;
                     }
 
             }
@@ -2587,7 +2665,7 @@ namespace Proyecto2_compi
             return resultado;
         }
 
-            double Aritmeticas(ParseTreeNode nodo)
+        double Aritmeticas(ParseTreeNode nodo)
         {
             double resultado = 0;
 
@@ -2663,6 +2741,34 @@ namespace Proyecto2_compi
                         break;
                     }
 
+                case "ID":
+                    {
+                        clase_n.funciones.Existe(fun_actual);
+                        
+
+                        if (clase_n.variables.Buscar_existe(nodo.Token.Text))
+                        {
+                            clase_n.variables.Buscar(nodo.Token.Text);
+
+
+                            resultado = Convert.ToDouble( clase_n.variables.aux.GetValor());
+
+                        }
+                        else if (clase_n.funciones.aux.variables.Buscar_existe(nodo.Token.Text))
+                        {
+                            clase_n.funciones.aux.variables.Buscar(nodo.Token.Text);
+                            resultado = Convert.ToDouble( clase_n.funciones.aux.variables.aux.GetValor());
+                        }
+                        else
+                        {
+                            textBox2.Text += "No existe variable :\"" + nodo.Token.Text + "\"";
+                        }
+
+                        break;
+                    }
+
+                
+
                 
 
 
@@ -2731,6 +2837,39 @@ namespace Proyecto2_compi
             }
             saveFileDialog1.Dispose();
             saveFileDialog1 = null;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            clase_n.funciones.Existe("Principal");
+            fun_actual = "Principal";
+            string respuesta = Actuar(clase_n.funciones.aux.nodo);
+
+            textBox2.Text += respuesta;
+        }
+
+        void Heredar(Clase nueva,Clase Padre)
+        {
+            Padre.funciones.SeekCabeza();
+
+            bool seguir = true;
+
+            while (seguir)
+            {
+                if (Padre.funciones.aux.GetNombre()!="Principal")
+                {
+                    nueva.funciones.Insertar(Padre.funciones.aux);
+                }
+
+                if (Padre.funciones.aux.siguiente != null)
+                {
+                    Padre.funciones.aux = Padre.funciones.aux.siguiente;
+                }
+                else
+                {
+                    seguir = false;
+                }
+            }
         }
     }
 }

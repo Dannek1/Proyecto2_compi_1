@@ -1,4 +1,5 @@
 ﻿
+using Irony.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace Proyecto2_compi
         private string nombre;
         private bool arreglo;
         public Variables variables;
+
+        public ParseTreeNode nodo;
 
         private string retorno="";
 

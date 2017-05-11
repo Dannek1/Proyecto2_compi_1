@@ -86,5 +86,45 @@ namespace Proyecto2_compi
 
             return respuesta;
         }
+
+        public Clase Existe(string nombre)
+        {
+            Clase respuesta = null;
+
+            if (cabeza == null)
+            {
+                respuesta = null;
+            }
+            else
+            {
+                bool seguir = true;
+
+                aux = cabeza;
+
+                while (seguir)
+                {
+                    if (aux.GetNombre().Equals(nombre))
+                    {
+                        seguir = false;
+                        respuesta = aux;
+
+                    }
+                    else
+                    {
+                        if (aux.siguiente != null)
+                        {
+                            aux = aux.siguiente;
+                        }
+                        else
+                        {
+                            seguir = false;
+                            respuesta = null;
+                        }
+                    }
+                }
+            }
+
+            return respuesta;
+        }
     }
 }
