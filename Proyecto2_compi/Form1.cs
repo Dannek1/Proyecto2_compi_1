@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ScintillaNET;
 
 namespace Proyecto2_compi
 {
@@ -24,6 +25,8 @@ namespace Proyecto2_compi
         string fun_actual;
         string clase_actual;
         bool retorna;
+        string componentes = "";
+        string errores = "";
 
         Clases clases;
         Clase clase_n;
@@ -39,6 +42,10 @@ namespace Proyecto2_compi
             globales = false;
             retorna = false;
             dibujo = pictureBox1.CreateGraphics();
+
+            textBox1.Margins[0].Width = 40;
+            textBox1.Styles[Style.LineNumber].Font = "Consolas";
+            textBox1.Margins[0].Type = MarginType.Number;
         }
 
         public string esCadenaValida(string cadenaEntrada, Grammar gramatica)
@@ -61,6 +68,7 @@ namespace Proyecto2_compi
 
                     a += "Error en " + arbol.ParserMessages[x].Location + ";" + arbol.ParserMessages[x].Message + "\n";
 
+                    errores += arbol.ParserMessages[x].Location.Line + ";" + arbol.ParserMessages[x].Location.Column + ";" + arbol.ParserMessages[x].Message+"@";
 
                 }
 
@@ -97,7 +105,7 @@ namespace Proyecto2_compi
         private void button1_Click(object sender, EventArgs e)
         {
             
-            
+
             Gramatica grammatica = new Gramatica();
             string respuesta = esCadenaValida(this.textBox1.Text, grammatica);
             if (respuesta != "")
@@ -107,8 +115,10 @@ namespace Proyecto2_compi
                 MessageBox.Show("Arbol de Analisis Sintactico Constuido !!!");
 
                 textBox2.Text += respuesta;
-
+                Reporte_Errores();
                 button2.Visible = true;
+
+                
 
             }
             else
@@ -117,7 +127,7 @@ namespace Proyecto2_compi
                 MessageBox.Show("Arbol de Analisis Sintactico Constuido !!!");
 
                 textBox2.Text += respuesta;
-
+                Reporte_Errores();
                 button2.Visible = true;
             }
         }
@@ -297,6 +307,7 @@ namespace Proyecto2_compi
                         }
 
                         clases.Insertar(clase_n);
+                        componentes += clase_n.GetNombre() + "," + "lienzo" + "," + "lienzo" + "," + "Principal"+";";
                         
 
 
@@ -342,6 +353,7 @@ namespace Proyecto2_compi
                             else
                             {
                                 textBox2.Text += "(Error en " + nodo.ChildNodes[2].Token.Location.Line + "," + nodo.ChildNodes[2].Token.Location.Column + ") No existe la clase :\"" + clase + "\"";
+                                errores += nodo.ChildNodes[2].Token.Location.Line + ";" + nodo.ChildNodes[2].Token.Location.Column+";"+"semantico"+";" +" No existe la clase:\"" + clase + "\"@";
                             }
                             
                         }
@@ -357,6 +369,8 @@ namespace Proyecto2_compi
                             else
                             {
                                 textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") No existe la clase :\"" + clase + "\"";
+
+                                errores += nodo.ChildNodes[0].Token.Location.Line + ";" + nodo.ChildNodes[0].Token.Location.Column + ";" + "semantico" + ";" + " No existe la clase:\"" + clase + "\"@";
                             }
 
                         }
@@ -412,6 +426,8 @@ namespace Proyecto2_compi
                             nuevo_f.nodo=nodo.ChildNodes[4];
 
                             clase_n.funciones.Insertar(nuevo_f);
+
+                            componentes += nuevo_f.GetNombre() + "," +nuevo_f.GetTipo()+","+"metodo"+","+clase_n.GetNombre()+";";
                         }
                         else if (nodo.ChildNodes.Count == 7)
                         {
@@ -426,6 +442,7 @@ namespace Proyecto2_compi
                                 nuevo_f.nodo = nodo.ChildNodes[5];
 
                                 clase_n.funciones.Insertar(nuevo_f);
+                                componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                             }
                             else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Visibilidad"))
                             {
@@ -446,6 +463,7 @@ namespace Proyecto2_compi
                                 nuevo_f = new Funcion(tipo, nombre, false, privacidad);
                                 nuevo_f.nodo = nodo.ChildNodes[5];
                                 clase_n.funciones.Insertar(nuevo_f);
+                                componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
                             }
                             else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Tipo"))
@@ -462,6 +480,7 @@ namespace Proyecto2_compi
                                 nuevo_f = new Funcion(tipo, nombre, false, privacidad);
                                 nuevo_f.nodo = nodo.ChildNodes[5];
                                 clase_n.funciones.Insertar(nuevo_f);
+                                componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
                             }
                             else
@@ -481,6 +500,7 @@ namespace Proyecto2_compi
 
                                 nuevo_f.nodo = nodo.ChildNodes[5];
                                 clase_n.funciones.Insertar(nuevo_f);
+                                componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
                             }
 
@@ -504,6 +524,7 @@ namespace Proyecto2_compi
                                     
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                 }
                                 else
                                 {
@@ -524,6 +545,7 @@ namespace Proyecto2_compi
                                     
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                 }
 
                             }
@@ -548,6 +570,7 @@ namespace Proyecto2_compi
                                     
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
 
                                 }
@@ -571,6 +594,7 @@ namespace Proyecto2_compi
                                     
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                 }
 
 
@@ -600,6 +624,7 @@ namespace Proyecto2_compi
                                     
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                 }
                                 else
                                 {
@@ -619,6 +644,7 @@ namespace Proyecto2_compi
                                     
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                 }
 
 
@@ -644,6 +670,7 @@ namespace Proyecto2_compi
                                     nuevo_f.nodo = nodo.ChildNodes[7];
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
                                 }
                                 else
@@ -661,6 +688,7 @@ namespace Proyecto2_compi
                                     nuevo_f.nodo = nodo.ChildNodes[7];
                                     
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
                                 }
                             }
@@ -689,6 +717,7 @@ namespace Proyecto2_compi
                                     nuevo_f.nodo = nodo.ChildNodes[7];
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
                                 }
                                 else
@@ -706,6 +735,7 @@ namespace Proyecto2_compi
                                     nuevo_f.nodo = nodo.ChildNodes[7];
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
                                 }
 
@@ -733,6 +763,7 @@ namespace Proyecto2_compi
                                 nuevo_f.nodo = nodo.ChildNodes[7];
 
                                 clase_n.funciones.Insertar(nuevo_f);
+                                componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
                             }
 
@@ -758,8 +789,9 @@ namespace Proyecto2_compi
                                 nuevo_f.nodo = nodo.ChildNodes[8];
 
                                 clase_n.funciones.Insertar(nuevo_f);
+                                componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
-                                
+
                             }
                             else if (nodo.ChildNodes[0].Term.Name.ToString().Equals("Visibilidad"))
                             {
@@ -789,6 +821,7 @@ namespace Proyecto2_compi
                                     nuevo_f.nodo = nodo.ChildNodes[8];
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
 
                                 }
@@ -806,6 +839,7 @@ namespace Proyecto2_compi
                                     nuevo_f.nodo = nodo.ChildNodes[8];
 
                                     clase_n.funciones.Insertar(nuevo_f);
+                                    componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
 
                                 }
@@ -846,6 +880,7 @@ namespace Proyecto2_compi
                             nuevo_f.nodo = nodo.ChildNodes[9];
 
                             clase_n.funciones.Insertar(nuevo_f);
+                            componentes += nuevo_f.GetNombre() + "," + nuevo_f.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
 
 
 
@@ -919,6 +954,7 @@ namespace Proyecto2_compi
                             else
                             {
                                 textBox2.Text += "(Error en "+ nodo.ChildNodes[0].Token.Location.Line+","+ nodo.ChildNodes[0].Token.Location.Column + ") No existe variable :\"" + variable + "\"";
+                                errores += nodo.ChildNodes[0].Token.Location.Line + ";" + nodo.ChildNodes[0].Token.Location.Column + ";" + "semantico" + ";" + " No existe la variable:\"" + variable + "\"@";
                             }
 
                         }
@@ -969,6 +1005,9 @@ namespace Proyecto2_compi
                                     else
                                     {
                                         textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+
+                                        errores += nodo.ChildNodes[0].Token.Location.Line + ";" + nodo.ChildNodes[0].Token.Location.Column + ";" + "semantico" + ";" + " la variable:\"" + variable + "\" no permite este tipo de operacion @";
+
                                     }
 
                                 }
@@ -995,6 +1034,8 @@ namespace Proyecto2_compi
                                     else
                                     {
                                         textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+
+                                        errores += nodo.ChildNodes[0].Token.Location.Line + ";" + nodo.ChildNodes[0].Token.Location.Column + ";" + "semantico" + ";" + "la variable:\"" + variable + "\"no permite este tipo de operacion@";
                                     }
                                 }
 
@@ -1029,6 +1070,7 @@ namespace Proyecto2_compi
                                     else
                                     {
                                         textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                        errores += nodo.ChildNodes[0].Token.Location.Line + ";" + nodo.ChildNodes[0].Token.Location.Column + ";" + "semantico" + ";" + "la variable:\"" + variable + "\" no permite este tipo de operacion@";
                                     }
 
                                 }
@@ -1055,6 +1097,7 @@ namespace Proyecto2_compi
                                     else
                                     {
                                         textBox2.Text += "(Error en " + nodo.ChildNodes[0].Token.Location.Line + "," + nodo.ChildNodes[0].Token.Location.Column + ") La Variable:\"" + variable + "\" no permite este tipo de operacion";
+                                        errores += nodo.ChildNodes[0].Token.Location.Line + ";" + nodo.ChildNodes[0].Token.Location.Column + ";" + "semantico" + ";" + "la variable:\"" + variable + "\" no permite este tipo de operacion@";
                                     }
                                 }
 
@@ -1066,6 +1109,7 @@ namespace Proyecto2_compi
                             else
                             {
                                 textBox2.Text += "(Error en " + nodo.Token.Location.Line + "," + nodo.Token.Location.Column + ") No existe variable :\"" + variable + "\"";
+                                errores += nodo.Token.Location.Line + ";" + nodo.Token.Location.Column + ";" + "semantico" + ";" + " No existe la variable:\"" + variable + "\"@";
                             }
                         }
 
@@ -1095,11 +1139,13 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.Existe(fun_actual);
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
                             }
@@ -1110,11 +1156,13 @@ namespace Proyecto2_compi
                                 if (globales)
                                 {
                                     clase_n.variables.Insertar(nuevo);
+                                    componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.GetNombre() + ";";
                                 }
                                 else
                                 {
                                     clase_n.funciones.Existe(fun_actual);
                                     clase_n.funciones.aux.variables.Insertar(nuevo);
+                                    componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                 }
                             }
 
@@ -1137,11 +1185,13 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.Existe(fun_actual);
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
                             }
@@ -1152,11 +1202,13 @@ namespace Proyecto2_compi
                                 if (globales)
                                 {
                                     clase_n.variables.Insertar(nuevo);
+                                    componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.GetNombre() + ";";
                                 }
                                 else
                                 {
                                     clase_n.funciones.Existe(fun_actual);
                                     clase_n.funciones.aux.variables.Insertar(nuevo);
+                                    componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                 }
                             }
 
@@ -1181,11 +1233,13 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.Existe(fun_actual);
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
                                 }
@@ -1196,11 +1250,13 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.Existe(fun_actual);
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
                             }
@@ -1225,11 +1281,13 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.Existe(fun_actual);
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "variable" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
                                 }
@@ -1240,11 +1298,13 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.Existe(fun_actual);
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
                             }
@@ -1269,11 +1329,13 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.Existe(fun_actual);
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
                                 }
@@ -1284,11 +1346,13 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.Existe(fun_actual);
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
                             }
@@ -1311,11 +1375,13 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.Existe(fun_actual);
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
                                 }
@@ -1326,11 +1392,13 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.Existe(fun_actual);
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
 
@@ -1361,11 +1429,13 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.Existe(fun_actual);
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                             componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
                                 }
@@ -1376,11 +1446,13 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.Existe(fun_actual);
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
 
@@ -1401,10 +1473,12 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
                                 }
@@ -1415,10 +1489,12 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
 
@@ -1426,6 +1502,7 @@ namespace Proyecto2_compi
                             else
                             {
                                 textBox2.Text += "No existe variable :\"" + nodo.ChildNodes[6].Token.Text + "\"";
+                                errores += nodo.ChildNodes[6].Token.Location.Line + ";" + nodo.ChildNodes[6].Token.Location.Column + ";" + "semantico" + ";" + " No existe la variable:\"" + nodo.ChildNodes[6].Token.Text + "\"@";
                             }
 
                         }
@@ -1454,10 +1531,12 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             nuevo_f.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
                                 }
@@ -1468,10 +1547,12 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         nuevo_f.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
 
@@ -1492,10 +1573,12 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
                                 }
@@ -1506,10 +1589,12 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
 
@@ -1517,6 +1602,7 @@ namespace Proyecto2_compi
                             else
                             {
                                 textBox2.Text += "No existe variable :\"" + nodo.ChildNodes[7].Token.Text + "\"";
+                                errores += nodo.ChildNodes[7].Token.Location.Line + ";" + nodo.ChildNodes[7].Token.Location.Column + ";" + "semantico" + ";" + " No existe la variable:\"" + nodo.ChildNodes[7].Token.Text + "\"@";
                             }
 
                         }
@@ -1545,11 +1631,14 @@ namespace Proyecto2_compi
                                             if (globales)
                                             {
                                                 clase_n.variables.Insertar(nuevo);
+                                                componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
+
                                             }
                                             else
                                             {
                                                 clase_n.funciones.Existe(fun_actual);
                                                 clase_n.funciones.aux.variables.Insertar(nuevo);
+                                                componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                             }
                                         }
                                     }
@@ -1560,11 +1649,13 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.Existe(fun_actual);
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
 
@@ -1591,11 +1682,13 @@ namespace Proyecto2_compi
                                             if (globales)
                                             {
                                                 clase_n.variables.Insertar(nuevo);
+                                                componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                             }
                                             else
                                             {
                                                 clase_n.funciones.Existe(fun_actual);
                                                 clase_n.funciones.aux.variables.Insertar(nuevo);
+                                                componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                             }
                                         }
                                     }
@@ -1606,11 +1699,13 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.Existe(fun_actual);
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
 
@@ -1649,11 +1744,13 @@ namespace Proyecto2_compi
                                                 if (globales)
                                                 {
                                                     clase_n.variables.Insertar(nuevo);
+                                                    componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                                 }
                                                 else
                                                 {
                                                     clase_n.funciones.Existe(fun_actual);
                                                     clase_n.funciones.aux.variables.Insertar(nuevo);
+                                                    componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                                 }
                                             }
                                         }
@@ -1664,11 +1761,13 @@ namespace Proyecto2_compi
                                             if (globales)
                                             {
                                                 clase_n.variables.Insertar(nuevo);
+                                                componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                             }
                                             else
                                             {
                                                 clase_n.funciones.Existe(fun_actual);
                                                 clase_n.funciones.aux.variables.Insertar(nuevo);
+                                                componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                             }
                                         }
 
@@ -1676,11 +1775,13 @@ namespace Proyecto2_compi
                                     else
                                     {
                                         textBox2.Text += "Tipos no Compatibles";
+                                        errores += nodo.ChildNodes[6].Token.Location.Line + ";" + nodo.ChildNodes[6].Token.Location.Column + ";" + "semantico" + ";" + "tipos no compatibles @";
                                     }
                                 }
                                 else
                                 {
                                     textBox2.Text += "No existe la funcion :\"" + nodo.ChildNodes[6].Token.Text + "\"";
+                                    errores += nodo.ChildNodes[6].Token.Location.Line + ";" + nodo.ChildNodes[6].Token.Location.Column + ";" + "semantico" + ";" + " No existe la funcion:\"" + nodo.ChildNodes[6].Token.Text + "\"@";
                                 }
 
                             }
@@ -1708,11 +1809,13 @@ namespace Proyecto2_compi
                                         if (globales)
                                         {
                                             clase_n.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                         }
                                         else
                                         {
                                             clase_n.funciones.Existe(fun_actual);
                                             clase_n.funciones.aux.variables.Insertar(nuevo);
+                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                         }
                                     }
                                 }
@@ -1723,11 +1826,13 @@ namespace Proyecto2_compi
                                     if (globales)
                                     {
                                         clase_n.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                     }
                                     else
                                     {
                                         clase_n.funciones.Existe(fun_actual);
                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                     }
                                 }
                             }
@@ -1768,10 +1873,12 @@ namespace Proyecto2_compi
                                                         if (globales)
                                                         {
                                                             clase_n.variables.Insertar(nuevo);
+                                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                                         }
                                                         else
                                                         {
                                                             nuevo_f.variables.Insertar(nuevo);
+                                                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + nuevo_f.GetNombre() + ";";
                                                         }
                                                     }
                                                 }
@@ -1782,16 +1889,19 @@ namespace Proyecto2_compi
                                                     if (globales)
                                                     {
                                                         clase_n.variables.Insertar(nuevo);
+                                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                                     }
                                                     else
                                                     {
                                                         nuevo_f.variables.Insertar(nuevo);
+                                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + nuevo_f.GetNombre() + ";";
                                                     }
                                                 }
                                             }
                                             else
                                             {
                                                 textBox2.Text += "Cantidad de Parametros errornea en  funcion :\"" + funcion + "\"";
+                                                errores += nodo.ChildNodes[6].Token.Location.Line + ";" + nodo.ChildNodes[6].Token.Location.Column + ";" + "semantico" + ";" + "cantidad de parametros erronea @";
                                             }    
 
 
@@ -1800,6 +1910,7 @@ namespace Proyecto2_compi
                                         else
                                         {
                                             textBox2.Text += "La funcion :\"" + funcion + "\" no lleva parametros";
+                                            errores += nodo.ChildNodes[6].Token.Location.Line + ";" + nodo.ChildNodes[6].Token.Location.Column + ";" + "semantico" + ";" + " la funcion:\"" + funcion + "\" no lleva parametros@";
                                         }
 
                                         
@@ -1808,11 +1919,13 @@ namespace Proyecto2_compi
                                     else
                                     {
                                         textBox2.Text += "Tipos no Compatibles";
+                                        errores += nodo.ChildNodes[6].Token.Location.Line + ";" + nodo.ChildNodes[6].Token.Location.Column + ";" + "semantico" + ";" + "tipos no compatibles@";
                                     }
                                 }
                                 else
                                 {
                                     textBox2.Text += "No existe la funcion :\"" + nodo.ChildNodes[6].Token.Text + "\"";
+                                    errores += nodo.ChildNodes[6].Token.Location.Line + ";" + nodo.ChildNodes[6].Token.Location.Column + ";" + "semantico" + ";" + " la funcion:\"" + nodo.ChildNodes[6].Token.Text + "\" no lleva parametros@";
                                 }
 
 
@@ -1855,11 +1968,13 @@ namespace Proyecto2_compi
                                                     if (globales)
                                                     {
                                                         clase_n.variables.Insertar(nuevo);
+                                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                                     }
                                                     else
                                                     {
                                                         clase_n.funciones.Existe(fun_actual);
                                                         clase_n.funciones.aux.variables.Insertar(nuevo);
+                                                        componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                                     }
                                                 }
                                             }
@@ -1870,17 +1985,20 @@ namespace Proyecto2_compi
                                                 if (globales)
                                                 {
                                                     clase_n.variables.Insertar(nuevo);
+                                                    componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.GetNombre() + ";";
                                                 }
                                                 else
                                                 {
                                                     clase_n.funciones.Existe(fun_actual);
                                                     clase_n.funciones.aux.variables.Insertar(nuevo);
+                                                    componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "metodo" + "," + clase_n.funciones.aux.GetNombre() + ";";
                                                 }
                                             }
                                         }
                                         else
                                         {
                                             textBox2.Text += "Cantidad de Parametros errornea en  funcion :\"" + funcion + "\"";
+                                            errores += nodo.ChildNodes[6].Token.Location.Line + ";" + nodo.ChildNodes[6].Token.Location.Column + ";" + "semantico" + ";" + " Cantidad de Parametros errornea en  funcion:\"" + funcion + "\" @";
                                         }
 
 
@@ -1889,6 +2007,7 @@ namespace Proyecto2_compi
                                     else
                                     {
                                         textBox2.Text += "La funcion :\"" + funcion + "\" no lleva parametros";
+                                        errores += nodo.ChildNodes[6].Token.Location.Line + ";" + nodo.ChildNodes[6].Token.Location.Column + ";" + "semantico" + ";" + " La funcion:\"" + funcion + "\"no lleva parametros @";
                                     }
 
 
@@ -1897,6 +2016,7 @@ namespace Proyecto2_compi
                                 else
                                 {
                                     textBox2.Text += "Tipos no Compatibles";
+
                                 }
                             }
                             else
@@ -2208,6 +2328,7 @@ namespace Proyecto2_compi
                             nuevo_f.parametros.Insertar(nuevo_P);
                             nuevo_f.AumentarParametros();
                             nuevo_f.variables.Insertar(nuevo);
+                            componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "Parametro" + "," + nuevo_f.GetNombre() + ";";
                         }
 
                         break;
@@ -2598,6 +2719,7 @@ namespace Proyecto2_compi
                                 Variable nuevo = new Variable(tipo, nombre);
 
                                 nuevo_f.variables.Insertar(nuevo);
+                                componentes += nuevo.GetNombre() + "," + nuevo.GetTipo() + "," + "Variable" + "," + nuevo_f.GetNombre() + ";";
 
                                 double control = Aritmeticas(nodo.ChildNodes[5]);
                                 nuevo.SetValor(Convert.ToString(control));
@@ -2823,7 +2945,7 @@ namespace Proyecto2_compi
             {
                 string ruta = saveFileDialog1.FileName;
 
-                FileStream fs = new FileStream(ruta, FileMode.Open, FileAccess.Write);
+                FileStream fs = new FileStream(ruta, FileMode.Create, FileAccess.Write);
 
                 StreamWriter fichero = new StreamWriter(fs);
                 fichero.Write(codigo);
@@ -2846,30 +2968,167 @@ namespace Proyecto2_compi
             string respuesta = Actuar(clase_n.funciones.aux.nodo);
 
             textBox2.Text += respuesta;
+            Reporte_Componentes();
+            Reporte_Errores();
         }
 
         void Heredar(Clase nueva,Clase Padre)
         {
-            Padre.funciones.SeekCabeza();
-
-            bool seguir = true;
-
-            while (seguir)
+            if (Padre != null)
             {
-                if (Padre.funciones.aux.GetNombre()!="Principal")
+
+
+                Padre.funciones.SeekCabeza();
+
+                bool seguir = true;
+
+                while (seguir)
                 {
-                    nueva.funciones.Insertar(Padre.funciones.aux);
+                    if (Padre.funciones.aux.GetNombre() != "Principal")
+                    {
+                        nueva.funciones.Insertar(Padre.funciones.aux);
+                    }
+
+                    if (Padre.funciones.aux.siguiente != null)
+                    {
+                        Padre.funciones.aux = Padre.funciones.aux.siguiente;
+                    }
+                    else
+                    {
+                        seguir = false;
+                    }
                 }
 
-                if (Padre.funciones.aux.siguiente != null)
-                {
-                    Padre.funciones.aux = Padre.funciones.aux.siguiente;
-                }
-                else
-                {
-                    seguir = false;
-                }
             }
+        }
+
+        public void Reporte_Componentes()
+        {
+            DateTime Hoy = DateTime.Today;
+            string fecha_actual = Hoy.ToString("dd-MM-yyyy");
+
+            string html= "<!DOCTYPE html PUBLIC \" -//W3C//DTD XHTML 1.0 Transitional//EN\" http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"> \n";
+            html += "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+            html += "<head >\n";
+            html += "<meta http-equiv=\"Content - Type\" content=\"text / html; charset = utf - 8\" />\n";
+            html += "<title>Simbolos</title>\n";
+            html += "</head >\n";
+
+            html +="<body >\n";
+            html += "<h1>Lista de Simbolos</h1>\n";
+            html += "<p>Dia de Ejecucion "+ fecha_actual+"</p>\n";
+            html += "<p>Hora de Ejecucion "+ DateTime.Now.ToShortTimeString()+"</p>\n";
+            html += "<table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
+            html += " <tr>\n";
+            html += "<th scope=\"col\">ID</th>\n";
+            html += "<th scope=\"col\">TIPO</th>\n";
+            html += "<th scope=\"col\">Rol</th>\n";
+            html += "<th scope=\"col\">Ambito</th>\n";
+            html += " </tr>\n";
+
+            string[] filas = componentes.Split(';');
+
+
+            for(int x = 0; x < filas.Length; x++)
+            {
+                if (filas[x] != "")
+                {
+                    string[] dato = filas[x].Split(',');
+                    html += " <tr>\n";
+
+                    html += "<th>" + dato[0] + "</th>\n";
+                    html += "<th>" + dato[1] + "</th>\n";
+                    html += "<th>" + dato[2] + "</th>\n";
+                    html += "<th>" + dato[3] + "</th>\n";
+                    html += " </tr>\n";
+                }
+                
+
+            }
+            html += "</table>\n";
+            html += "</body>\n";
+            html += "</html>\n";
+
+
+
+            FileStream fs = new FileStream("C:\\Fuentes\\Reporte_Simbolos.html", FileMode.Create, FileAccess.Write);
+
+            StreamWriter fichero = new StreamWriter(fs);
+            fichero.Write(html);
+            fichero.Close();
+            fs.Close();
+
+
+            //html += "\n";
+
+
+        }
+
+        public void Reporte_Errores()
+        {
+            DateTime Hoy = DateTime.Today;
+            string fecha_actual = Hoy.ToString("dd-MM-yyyy");
+
+            string html = "<!DOCTYPE html PUBLIC \" -//W3C//DTD XHTML 1.0 Transitional//EN\" http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"> \n";
+            html += "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+            html += "<head >\n";
+            html += "<meta http-equiv=\"Content - Type\" content=\"text / html; charset = utf - 8\" />\n";
+            html += "<title>Simbolos</title>\n";
+            html += "</head >\n";
+
+            html += "<body >\n";
+            html += "<h1>Lista de Simbolos</h1>\n";
+            html += "<p>Dia de Ejecucion " + fecha_actual + "</p>\n";
+            html += "<p>Hora de Ejecucion " + DateTime.Now.ToShortTimeString() + "</p>\n";
+            html += "<table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
+            html += " <tr>\n";
+            html += "<th scope=\"col\">Linea</th>\n";
+            html += "<th scope=\"col\">Columna</th>\n";
+            html += "<th scope=\"col\">Tipo</th>\n";
+            html += "<th scope=\"col\">Detalles</th>\n";
+            html += " </tr>\n";
+
+            string[] filas = errores.Split('@');
+
+
+            for (int x = 0; x < filas.Length; x++)
+            {
+                if (filas[x] != "")
+                {
+                    string[] dato = filas[x].Split(';');
+                    html += " <tr>\n";
+
+                    html += "<th>" + dato[0] + "</th>\n";
+                    html += "<th>" + dato[1] + "</th>\n";
+                    html += "<th>" + dato[2] + "</th>\n";
+                    if (dato.Length == 4)
+                    {
+                        html += "<th>" + dato[3] + "</th>\n";
+                    }
+                    
+                    
+                    html += " </tr>\n";
+                }
+
+
+            }
+            html += "</table>\n";
+            html += "</body>\n";
+            html += "</html>\n";
+
+
+
+            FileStream fs = new FileStream("C:\\Fuentes\\Reporte_Errores.html", FileMode.Create, FileAccess.Write);
+
+            StreamWriter fichero = new StreamWriter(fs);
+            fichero.Write(html);
+            fichero.Close();
+            fs.Close();
+
+
+            //html += "\n";
+
+
         }
     }
 }
