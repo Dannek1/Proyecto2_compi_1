@@ -27,12 +27,14 @@ namespace Proyecto2_compi
         bool retorna;
         string componentes = "";
         string errores = "";
+        bool primera = true;
 
         Clases clases;
         Clase clase_n;
         Funcion nuevo_f;
         Parametro nuevo_P;
         Graphics dibujo;
+        Bitmap mapa;
 
 
         public Form1()
@@ -41,7 +43,9 @@ namespace Proyecto2_compi
             clases = new Clases();
             globales = false;
             retorna = false;
+            
             dibujo = pictureBox1.CreateGraphics();
+            
 
             textBox1.Margins[0].Width = 40;
             textBox1.Styles[Style.LineNumber].Font = "Consolas";
@@ -2243,10 +2247,23 @@ namespace Proyecto2_compi
                         SolidBrush myBrush = new SolidBrush(_color);
 
 
-                        dibujo.FillEllipse(myBrush, x, y, diametro, diametro);
 
+                        int radio = diametro / 2;
+
+                        
+                        int inix = x - radio;
+                        int iniy = y - radio;                   
+
+
+                        dibujo.FillEllipse(myBrush, inix, iniy, diametro, diametro);
+                        
+                        
+
+                        
 
                         pictureBox1.Update();
+                        
+                        
                         
                         
                         break;
@@ -2272,14 +2289,18 @@ namespace Proyecto2_compi
                         SolidBrush myBrush = new SolidBrush(_color);
 
 
-                        ancho = Convert.ToInt32(Actuar(nodo.ChildNodes[7]));
+                        ancho = Convert.ToInt32(Actuar(nodo.ChildNodes[7]));                       
                         alto = Convert.ToInt32(Actuar(nodo.ChildNodes[9]));
 
+                        int inix = x - (ancho / 2);
+                        int iniy = y - (alto / 2);
                         tipoc = Actuar(nodo.ChildNodes[11]);
                         tipo = tipoc[1];
                         if (tipo == 'o')
                         {
-                            dibujo.FillEllipse(myBrush, x, y, ancho, alto);
+
+
+                            dibujo.FillEllipse(myBrush, inix, iniy, ancho, alto);
                         }
                         else if (tipo == 'r')
                         {
@@ -2546,6 +2567,18 @@ namespace Proyecto2_compi
                             }
                             else
                             {
+
+                                if(Actuar(nodo.ChildNodes[0]).Equals("true")|| Actuar(nodo.ChildNodes[0]).Equals("false"))
+                                {
+
+                                }
+                                else {
+
+
+
+
+                                }
+
                                 double operador1 = Convert.ToDouble(Actuar(nodo.ChildNodes[0]));
                                 double operador2 = Convert.ToDouble(Actuar(nodo.ChildNodes[2]));
 
@@ -2965,11 +2998,23 @@ namespace Proyecto2_compi
         {
             clase_n.funciones.Existe("Principal");
             fun_actual = "Principal";
+
+            if (primera)
+            {
+                dibujo.ScaleTransform(0.5f, 0.5f);
+                primera = false;
+            }
+            
             string respuesta = Actuar(clase_n.funciones.aux.nodo);
 
             textBox2.Text += respuesta;
             Reporte_Componentes();
             Reporte_Errores();
+
+            //double x=dibujo.;
+            
+            
+            
         }
 
         void Heredar(Clase nueva,Clase Padre)
@@ -3128,6 +3173,11 @@ namespace Proyecto2_compi
 
             //html += "\n";
 
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }
